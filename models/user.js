@@ -1,7 +1,7 @@
 let mongoose = require('mongoose'),
     { Schema } = mongoose,
     Joi = require('joi'),
-    crypto = require('crypto')
+    bcrypt = require('bcrypt')
 
 const userSchema = new Schema({
     userName: {
@@ -22,6 +22,33 @@ const userSchema = new Schema({
         default: false,
     },
 })
+
+userSchema.methods.validateUserFields = user => {
+    const joiUserschema = Joi.object({
+        _id: Joi.options({ allowUnknown: true }),
+        userName: Joi.string()
+            .alphanum()
+            .min(2)
+            .max(30)
+            .required(),
+        email: Joi.string().email({
+            minDomainSegments: 2,
+            tlds: { allow: ['com', 'net'] },
+        }),
+        password: Joi.string()
+            .required()
+            .min(8)
+            .max(20),
+        isBusiness: Joi.boolean().default(false),
+    })
+    return joiUserschema.validate(user)
+}
+
+userSchema.methods.hashUserPassword = psw => {
+    const saltRounds = 5
+    const salt = bcrypt.genSaltSync(saltRounds)
+    return bcrypt.hashSync(psw, salt)
+}
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
