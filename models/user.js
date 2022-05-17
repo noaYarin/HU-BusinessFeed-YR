@@ -3,25 +3,28 @@ let mongoose = require('mongoose'),
     Joi = require('joi'),
     bcrypt = require('bcrypt')
 
-const userSchema = new Schema({
-    userName: {
-        type: String,
-        required: 'Enter name',
+const userSchema = new Schema(
+    {
+        userName: {
+            type: String,
+            required: 'Enter name',
+        },
+        email: {
+            type: String,
+            required: 'Enter email',
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: 'Enter password',
+        },
+        isBusiness: {
+            type: Boolean,
+            default: false,
+        },
     },
-    email: {
-        type: String,
-        required: 'Enter email',
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: 'Enter password',
-    },
-    isBusiness: {
-        type: Boolean,
-        default: false,
-    },
-})
+    { timestamps: true }
+)
 
 userSchema.methods.validateUserFields = user => {
     const joiUserschema = Joi.object({
