@@ -1,13 +1,18 @@
-const express = require("express")
-app = express()
-  mongoose = require("mongoose"),
-  port = 3000;
-
+const express = require('express'),
+    app = express(),
+    mongoose = require('mongoose'),
+    port = process.env.PORT || 3000,
+    host = process.env.HOST || 'localhost',
+    dbHost = process.env.DBHOST
 // app.get("/", (req, res) => {
 //   return res.json({ hello: "world" })
 // })
 
 mongoose
- .connect("mongodb://0.0.0.0:27017").then(()=>{
-    app.listen(port, ()=>{console.info(`start server start listening on port http://localhost:${port}`)})
-}).catch(err=>console.error(err))
+    .connect(`${dbHost}businessFeed`)
+    .then(() => {
+        app.listen(port, () => {
+            console.info(`start server start listening on port ${host}:${port}`)
+        })
+    })
+    .catch(err => console.error(err))
