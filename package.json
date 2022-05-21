@@ -21,9 +21,10 @@
         "morgan": "^1.9.0"
     },
     "devDependencies": {
+        "dotenv": "^8.2.0",
         "nodemon": "2.0.16",
         "prettier": "1.18.2",
-        "dotenv": "^8.2.0"
+        "uuid": "^8.3.2"
     },
     "repository": {
         "type": "git",

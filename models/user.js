@@ -22,13 +22,14 @@ const userSchema = new Schema(
             type: Boolean,
             default: false,
         },
+        // {cards}
     },
     { timestamps: true }
 )
 
 userSchema.methods.validateUserFields = user => {
-    const joiUserschema = Joi.object({
-        _id: Joi.options({ allowUnknown: true }),
+    const joiUserSchema = Joi.object({
+        // _id: Joi.options({ allowUnknown: true }),
         userName: Joi.string()
             .alphanum()
             .min(2)
@@ -44,7 +45,7 @@ userSchema.methods.validateUserFields = user => {
             .max(20),
         isBusiness: Joi.boolean().default(false),
     })
-    return joiUserschema.validate(user)
+    return joiUserSchema.validate(user)
 }
 
 userSchema.methods.hashUserPassword = psw => {
