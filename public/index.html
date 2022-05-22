@@ -1,13 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Business Feed</title>
-    </head>
-    <body>
-        <button>Test Api</button>
-    </body>
-    <script src="./main.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<title>Business Feed</title>
+	</head>
+	<body>
+		<fieldset>
+			<legend>Create a Business Card</legend>
+			<label>bName: <input type="text" value="HaShahar" disabled/></label
+			><br />
+			<label
+				>bDesc:
+				<input
+					type="text"
+					value="chocolate in any form"
+					disabled/></label
+			><br />
+			<label>bAddr: <input type="text" value="Tel-Aviv" disabled/></label
+			><br />
+			<label
+				>bPhone: <input type="text" value="097964123" disabled/></label
+			><br />
+			<label
+				>bImageUrl:
+				<input
+					type="text"
+					value="https://has.co.il/assets/images/hasbox.png"
+					disabled/></label
+			><br />
+			<button data-create="createCard">Test Api</button>
+		</fieldset>
+	</body>
+	<script src="./main.js"></script>
 </html>

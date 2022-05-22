@@ -29,7 +29,7 @@ const userSchema = new Schema(
 
 userSchema.methods.validateUserFields = user => {
     const joiUserSchema = Joi.object({
-        // _id: Joi.options({ allowUnknown: true }),
+        _id: Joi.options({ allowUnknown: true }),
         userName: Joi.string()
             .alphanum()
             .min(2)
@@ -53,6 +53,7 @@ userSchema.methods.hashUserPassword = psw => {
     const salt = bcrypt.genSaltSync(saltRounds)
     return bcrypt.hashSync(psw, salt)
 }
+
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
