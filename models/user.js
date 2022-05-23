@@ -21,13 +21,13 @@ const userSchema = new Schema(
         isBusiness: {
             type: Boolean,
             default: false,
-        },
+        }
     },
     { timestamps: true }
 )
 
 userSchema.methods.validateUserFields = user => {
-    const joiUserschema = Joi.object({
+    const joiUserSchema = Joi.object({
         _id: Joi.options({ allowUnknown: true }),
         userName: Joi.string()
             .alphanum()
@@ -44,7 +44,7 @@ userSchema.methods.validateUserFields = user => {
             .max(20),
         isBusiness: Joi.boolean().default(false),
     })
-    return joiUserschema.validate(user)
+    return joiUserSchema.validate(user)
 }
 
 userSchema.methods.hashUserPassword = psw => {
@@ -52,6 +52,7 @@ userSchema.methods.hashUserPassword = psw => {
     const salt = bcrypt.genSaltSync(saltRounds)
     return bcrypt.hashSync(psw, salt)
 }
+
 
 const User = mongoose.model('User', userSchema)
 module.exports = User
