@@ -1,7 +1,5 @@
 $(function() {
-	$.get("/cards/allCards", (res) => console.log(res))
-		// .then((res) => console.log(res))
-		// .catch((e) => console.warn(e))
+	$.get("/cards/allCards", (res) => populateTable(res))
 
 	let tempCard = {
 		bName: "HaShahar",
@@ -14,5 +12,31 @@ $(function() {
 		$.post("/cards/newCard", { ...tempCard }).then((res) =>
 			console.log(res)
 		)
+	})
+
+	const populateTable = (data) => {
+		$("#bCard-table").empty()
+		$.each(data, (_, card) => {
+			let row = $("#bCard-table").append(
+				`<tr value=${card._id}>
+					<td>${card.bName}</td>
+					<td>${card.bPhone}</td>
+					<td>${card.bDesc}</td>
+					<td>${card.cardId}</td>
+					<td>${card.bAddr}</td>
+				</tr>`
+			)
+		})
+	}
+
+	let userInfo = {
+		userName: "John Doe",
+		email: "johndoe@gmail.com",
+		password: "123456789",
+		isBusiness: false,
+	}
+
+	$("#signin").on("click", () => {
+		$.post("/user/signUp", { ...userInfo })
 	})
 })

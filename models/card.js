@@ -44,18 +44,6 @@ cardSchema.methods.validateBusinessCard = (bCard) => {
 	return joiCardSchema.validate(bCard)
 }
 
-// cardSchema.methods.genCardId = (card) => {
-// 	card.cardId = uniqueCardId()
-// 	// return uniqueCardId()
-// } genCardId = uniqueCardId()
 const Card =  mongoose.model("Card", cardSchema)
 module.exports = Card
-// 10.4	על הכרטיס שיפתח לכלול את השדות הבאים:
-//  שם העסק, bName
-// 	תיאור העסק, bDesc
-// 	כתובת העסק, = bAddr
-// 	טלפון העסק, = bPhone
-// 	תמונת העסק(קישור לתמונה), = bImageUrl
-// 	מספר מזהה רנדומלי וייחודי = cardId  <string>
-//  מועדפים = מערך של משתמשים שעשו לייק לכרטיס = likes
-//  מזהה בעל הכרטיס = ownerId
+

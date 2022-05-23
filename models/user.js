@@ -21,8 +21,7 @@ const userSchema = new Schema(
         isBusiness: {
             type: Boolean,
             default: false,
-        },
-        // {cards}
+        }
     },
     { timestamps: true }
 )
