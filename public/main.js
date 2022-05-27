@@ -1,5 +1,7 @@
 $(function() {
-	$.get("/cards/allCards", (res) => populateTable(res))
+	$('[data-get="getData"]').on("click", () => {
+		$.get("/cards/allCards", (res) => populateTable(res))
+	})
 
 	let tempCard = {
 		bName: "HaShahar",
@@ -8,22 +10,17 @@ $(function() {
 		bPhone: "097964123",
 		bImageUrl: "https://has.co.il/assets/images/hasbox.png",
 	}
-	$('[data-create="createCard"]').on("click", () => {
-		$.post("/cards/newCard", { ...tempCard }).then((res) =>
-			console.log(res)
-		)
-	})
 
 	const populateTable = (data) => {
 		$("#bCard-table").empty()
 		$.each(data, (_, card) => {
 			let row = $("#bCard-table").append(
 				`<tr value=${card._id}>
-					<td>${card.bName}</td>
-					<td>${card.bPhone}</td>
-					<td>${card.bDesc}</td>
-					<td>${card.cardId}</td>
-					<td>${card.bAddr}</td>
+				<td>${card.bName}</td>
+				<td>${card.bPhone}</td>
+				<td>${card.bDesc}</td>
+				<td>${card.cardId}</td>
+				<td>${card.bAddr}</td>
 				</tr>`
 			)
 		})
@@ -37,6 +34,23 @@ $(function() {
 	}
 
 	$("#signin").on("click", () => {
-		$.post("/user/signUp", { ...userInfo })
+		$.post("/user/signIn", { ...userInfo }, (res) => {
+			localStorage.setItem("userToken", res)
+		})
+	})
+
+	$('[data-create="createCard"]').on("click", () => {
+		// $.post("/cards/newCard", { ...tempCard }).then((res) =>
+		// 	console.log(res)
+		// )
+		$.ajax({
+			type: "POST",
+			url: "/cards/newCard",
+			data: { ...userInfo },
+			beforeSend: function(request) {
+				request.setRequestHeader("authorization", "MY_UNIQUE_TOKEN")
+			},
+			success: function(response) {},
+		})
 	})
 })

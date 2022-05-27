@@ -17,7 +17,16 @@ const verifyToken = (token) => {
 	})
 }
 
+const authorizedRequests = (url) => {
+	requests = ["/cards/allCards", "/user/signIn", "/favicon.ico"]
+	// req.url in requests
+	return requests.indexOf(url) > -1 ? true : false
+}
+// const unauthorizedRequsts = (req) => {}
+
 module.exports = {
 	generateToken,
 	verifyToken,
+	authorizedRequests,
+	// unauthorizedRequsts,
 }
