@@ -58,7 +58,13 @@ cardRoutes.post("/newCard", (req, res) => {
 		.catch((err) => res.status(500).json(err))
 })
 
-cardRoutes.put("/cardBy/:id", (req, res) => {
+cardRoutes.get("/:cardId", (req, res) => {
+	getOneCard(req.params.id)
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(404).json(err))
+})
+
+cardRoutes.put("/:cardId", (req, res) => {
 	updateCard(req.params.cardId, req.body)
 		.then((card) => res.status(200).json(card))
 		.catch((err) => res.status(500).json(err))

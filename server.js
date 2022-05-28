@@ -8,7 +8,25 @@ const express = require("express"),
 	userRouter = require("./routes/userRouter"),
 	cardRouter = require("./routes/cardRouter"),
 	auth = require("./services/auth"),
-	cors = require("cors")
+	cors = require("cors"),
+	fs = require("fs"),
+	morgan = require("morgan"),
+	path = require("path"),
+
+const accessLogStream = fs.createWriteStream(
+	path.join(__dirname, "access.log"),
+	{
+		flags: "a",
+	}
+)
+
+app.use(morgan("combined", { stream: accessLogStream }))
+
+const corsOption = {
+	origin: ["http://localhost:2907"],
+}
+app.use(cors(corsOption))
+
 
 //#region middlewares
 app.use(express.static("public"))
