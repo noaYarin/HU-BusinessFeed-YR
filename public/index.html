@@ -7,10 +7,12 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<title>Business Feed</title>
 	</head>
+
 	<body>
 		<div>
 			<button id="signin">signin</button>
 			<button id="signout">signout</button>
+			<button id="register">register</button>
 		</div>
 		<div>
 			<fieldset>
@@ -39,20 +41,41 @@
 					<input
 						type="text"
 						value="https://has.co.il/assets/images/hasbox.png"
-						disabled
-					/> </label
+						disabled/></label
 				><br />
-				<button data-create="createCard">Test Api</button>
+				<button data-create="createCard">Create Card</button>
+				<button data-get="getData">Get All Cards</button>
+			</fieldset>
+		</div>
+		<div>
+			<fieldset>
+				<legend>Search Cards by user ID</legend>
+				<label>userId: <input type="text" data-user="userId"/></label>
+				<button data-get="getUserCards">Get user cards</button>
+			</fieldset>
+		</div>
+			<fieldset>
+				<legend>Search Cards by unique card ID</legend>
+				<label>userId: <input type="text" data-card="cardUniqueId"/></label>
+				<button data-get="getCardUnique">Get unique card</button>
+			</fieldset>
+		</div>
+		</div>
+			<fieldset>
+				<legend>Search Card ID</legend>
+				<label>userId: <input type="text" data-card="cardId"/></label>
+				<button data-get="getCard">Get unique card</button>
 			</fieldset>
 		</div>
 		<div>
 			<table>
 				<thead>
-					<th>bName</th>
-					<th>bPhone</th>
-					<th>bDesc</th>
-					<th>cardId</th>
-					<th>bAddr</th>
+					<th>b Name</th>
+					<th>b Phone</th>
+					<th>b Desc</th>
+					<th>card Unique Id</th>
+					<th>b Addr</th>
+					<th>owner Id</th>
 				</thead>
 				<tbody id="bCard-table"></tbody>
 			</table>
