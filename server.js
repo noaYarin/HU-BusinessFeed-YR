@@ -34,9 +34,9 @@ app.use((req, res, next) => {
 				res.locals.decodedToken = data
 				return next()
 			})
-			.catch((err) => res.status(401).json("Invalid Token!"))
+			.catch(() => res.status(401).json("Invalid Token!"))
 	} else {
-		// res.status(401).json("Unaothorized access!")
+		res.status(401).json("Unaothorized access!")
 	}
 })
 //#endregion
