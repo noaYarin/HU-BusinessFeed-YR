@@ -27,10 +27,10 @@ $(function() {
 	}
 
 	let userInfo = {
-		userName: "John Doe",
+		userName: "JohnDoe",
 		email: "johndoe@gmail.com",
 		password: "123456789",
-		isBusiness: false,
+		isBusiness: true,
 	}
 
 	$("#signin").on("click", () => {
@@ -38,19 +38,30 @@ $(function() {
 			localStorage.setItem("userToken", res)
 		})
 	})
+	if (localStorage.getItem("userinfo")) {
+		$("#register").attr("disabled", true)
+	}
+	$("#register").on("click", () => {
+		$.post("/user/signUp", { ...userInfo }, (res) => {
+			localStorage.setItem("userinfo", JSON.stringify(res))
+		})
+	})
 
 	$('[data-create="createCard"]').on("click", () => {
 		// $.post("/cards/newCard", { ...tempCard }).then((res) =>
 		// 	console.log(res)
 		// )
+		// let token = JSON.stringify(localStorage.getItem("userToken"))
+		let token = localStorage.getItem("userToken")
 		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader("authorization", token)
+			},
 			type: "POST",
 			url: "/cards/newCard",
-			data: { ...userInfo },
-			beforeSend: function(request) {
-				request.setRequestHeader("authorization", "MY_UNIQUE_TOKEN")
-			},
-			success: function(response) {},
+			data: { ...tempCard },
 		})
+			.then((res) => console.log(res))
+			.catch((res) => console.log(res))
 	})
 })

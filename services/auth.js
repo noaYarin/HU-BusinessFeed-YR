@@ -12,13 +12,19 @@ const verifyToken = (token) => {
 	let secretKey = process.env.SECRET_KEY
 	return new Promise((resolve, reject) => {
 		jwt.verify(token, secretKey, (err, decoded) => {
-			err ? reject(err) : resolve(decoded)
+			!decoded ? reject(err) : resolve(decoded)
 		})
 	})
 }
 
+
 const authorizedRequests = (url) => {
-	requests = ["/cards/allCards", "/user/signIn", "/favicon.ico"]
+	requests = [
+		"/cards/allCards",
+		"/user/signIn",
+		"/user/signUp",
+		"/favicon.ico",
+	]
 	// req.url in requests
 	return requests.indexOf(url) > -1 ? true : false
 }

@@ -8,7 +8,7 @@ const express = require("express"),
 	userRouter = require("./routes/userRouter"),
 	cardRouter = require("./routes/cardRouter"),
 	auth = require("./services/auth"),
-	cors = require('cors')
+	cors = require("cors")
 
 //#region middlewares
 app.use(express.static("public"))
@@ -28,8 +28,13 @@ app.use((req, res, next) => {
 
 	token = req.headers["authorization"]
 	if (token) {
-		// return next()
-		res.status(200).json("Authorized access!")
+		auth.verifyToken(token)
+			.then((data) => {
+				res.locals.isBusiness = data.isBusiness
+				res.locals.userId = 
+				return next()
+			})
+			.catch((err) => res.status(400).json("Invalid Token!"))
 	} else {
 		res.status(401).json("Unaothorized access!")
 	}
