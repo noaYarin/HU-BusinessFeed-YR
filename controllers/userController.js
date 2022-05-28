@@ -45,26 +45,11 @@ const signIn = (user) => {
 	})
 }
 
-// const generateToken = (user) => {
-// 	let secretKey = process.env.SECRET_KEY
-// 	_.unset(user._doc, "password")
-// 	let token = jwt.sign({ ...user._doc }, secretKey)
-// 	return token
-// }
-
-// const verifyToken = (token) => {
-// 	let secretKey = process.env.SECRET_KEY
-// 	return new Promise((resolve, reject) => {
-// 		jwt.verify(token, secretKey, (err, decoded) => {
-// 			err ? reject(err) : resolve(decoded)
-// 		})
-// 	})
-// }
-
 const getUser = (userId) => {
 	return new Promise((resolve, reject) => {
-		User.findById(userId)
+		User.findById({ _id: userId })
 			.then((user) => {
+				console.log(user)
 				_.unset(user._doc, "password")
 				resolve(user)
 			})
@@ -75,6 +60,5 @@ const getUser = (userId) => {
 module.exports = {
 	signUp,
 	signIn,
-	verifyToken,
 	getUser,
 }
