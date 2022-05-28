@@ -62,13 +62,21 @@ const updateCard = (cardId, cardData) => {
 			.catch((err) => reject(err))
 	})
 }
-const deleteCard = (cardId) => {
+
+const deleteCard = (cardId, ownerId) => {
 	return new Promise((resolve, reject) => {
-		Card.findByIdAndDelete(cardId)
-			.then((card) => resolve(card))
-			.catch((err) => reject(err))
-	})
-}
+		Card.findOneAndDelete({
+			_id: cardId,
+			ownerId,
+		})
+			.then((card) => {
+				if (!card) {
+					reject("You do not have permission to delete this card!")
+				} else {
+					resolve(card)
+				}
+			})
+	
 module.exports = {
 	getAllCards,
 	getUserCards,

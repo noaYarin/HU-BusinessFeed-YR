@@ -44,9 +44,9 @@ app.use((req, res, next) => {
 	if (auth.authorizedRequests(req.originalUrl)) {
 		return next()
 	}
-
 	token = req.headers["authorization"]
 	if (token) {
+		token = token.replace("Bearer ", "")
 		auth.verifyToken(token)
 			.then((data) => {
 				res.locals.decodedToken = data

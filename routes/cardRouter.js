@@ -34,14 +34,14 @@ cardRoutes.get("/byUser/:id", (req, res) => {
 
 cardRoutes.get("/byUnique/:id", (req, res) => {
 	getOneCardUnique(req.params.id)
-	.then((card) => res.status(200).json(card))
-	.catch((err) => res.status(500).json(err))
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(500).json(err))
 })
 
 cardRoutes.get("/cardBy/:id", (req, res) => {
 	getOneCard(req.params.id)
-	.then((card) => res.status(200).json(card))
-	.catch((err) => res.status(500).json(err))
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(500).json(err))
 })
 
 cardRoutes.post("/newCard", (req, res) => {
@@ -71,9 +71,9 @@ cardRoutes.put("/:cardId", (req, res) => {
 })
 
 cardRoutes.delete("/cardBy/:id", (req, res) => {
-	deleteCard(req.params.id)
-		.then((card) => res.json(card))
-		.catch((err) => res.json(err))
+	deleteCard(req.params.id, res.locals.decodedToken._id)
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(401).json(err))
 })
 
 module.exports = cardRoutes
