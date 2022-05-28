@@ -26,14 +26,14 @@ cardRoutes.post("/newCard", (req, res) => {
 	_.set(cardData, "cardId", uniqueCardId())
 	_.set(cardData, "ownerId", "62892e8c0ffcb74d08e9f900")
 	insertOneCard(cardData)
-		.then((card) => res.json(card))
-		.catch((err) => res.json(err))
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(404).json(err))
 })
 
-cardRoutes.get("/byId/:id", (req, res) => {
+cardRoutes.get("/:cardId", (req, res) => {
 	getOneCard(req.params.id)
-		.then((card) => res.json(card))
-		.catch((err) => res.json(err))
+		.then((card) => res.status(200).json(card))
+		.catch((err) => res.status(404).json(err))
 })
 
 cardRoutes.put("/:cardId", (req, res) => {
@@ -42,7 +42,7 @@ cardRoutes.put("/:cardId", (req, res) => {
 		.catch((err) => res.json(err))
 })
 
-cardRoutes.delete("/:id", (req, res) => {
+cardRoutes.delete("/:cardId", (req, res) => {
 	deleteCard(req.params.id)
 		.then((card) => res.json(card))
 		.catch((err) => res.json(err))

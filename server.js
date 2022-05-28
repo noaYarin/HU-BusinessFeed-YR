@@ -6,7 +6,25 @@ const express = require("express"),
 	host = process.env.HOST || "localhost",
 	dbHost = process.env.DBHOST || "mongodb://0.0.0.0:27017",
 	userRouter = require("./routes/userRouter"),
-	cardRouter = require("./routes/cardRouter")
+	cardRouter = require("./routes/cardRouter"),
+	fs = require("fs"),
+	morgan = require("morgan"),
+	path = require("path"),
+	cors = require("cors")
+
+const accessLogStream = fs.createWriteStream(
+	path.join(__dirname, "access.log"),
+	{
+		flags: "a",
+	}
+)
+
+app.use(morgan("combined", { stream: accessLogStream }))
+
+const corsOption = {
+	origin: ["http://localhost:2907"],
+}
+app.use(cors(corsOption))
 
 app.use(express.static("public"))
 app.use(express.json())
