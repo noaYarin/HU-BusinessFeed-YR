@@ -1,6 +1,8 @@
-const mongoose = require("mongoose"),
-	Card = require("../models/card"),
+const Card = require("../models/card"),
 	_ = require("lodash")
+
+const { generateToken, verifyToken } = require("../services/auth")
+
 
 const getAllCards = () => {
 	return new Promise((resolve, reject) => {
@@ -47,16 +49,20 @@ const getOneCard = (cardId) => {
 			.then((card) => {
 				card ? resolve(card) : reject("No Card Found!")
 			})
+		Card.findOne(cardId)
+			.then((card) => resolve(card))
+
 			.catch((err) => reject(err))
 	})
 }
-const updateCard = (id, cardData) => {
+const updateCard = (cardId, cardData) => {
 	return new Promise((resolve, reject) => {
-		Card.findByIdAndUpdate(id, cardData)
+		Card.findByIdAndUpdate(cardId, cardData)
 			.then((card) => resolve(card))
 			.catch((err) => reject(err))
 	})
 }
+
 const deleteCard = (cardId, ownerId) => {
 	return new Promise((resolve, reject) => {
 		Card.findOneAndDelete({
@@ -70,9 +76,7 @@ const deleteCard = (cardId, ownerId) => {
 					resolve(card)
 				}
 			})
-			.catch((err) => reject(err))
-	})
-}
+	
 module.exports = {
 	getAllCards,
 	getUserCards,
