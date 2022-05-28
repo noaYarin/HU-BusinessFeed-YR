@@ -21,6 +21,7 @@ var corsOptions = {
 }
 //#endregion
 
+//#region Custom middleware
 app.use((req, res, next) => {
 	if (auth.authorizedRequests(req.originalUrl)) {
 		return next()
@@ -30,18 +31,20 @@ app.use((req, res, next) => {
 	if (token) {
 		auth.verifyToken(token)
 			.then((data) => {
-				res.locals.isBusiness = data.isBusiness
-				res.locals.userId = 
+				res.locals.decodedToken = data
 				return next()
 			})
-			.catch((err) => res.status(400).json("Invalid Token!"))
+			.catch((err) => res.status(401).json("Invalid Token!"))
 	} else {
-		res.status(401).json("Unaothorized access!")
+		// res.status(401).json("Unaothorized access!")
 	}
 })
+//#endregion
 
+//#region Routers
 app.use("/user", userRouter)
 app.use("/cards", cardRouter)
+//#endregion
 
 //#region  PORT OPEN
 mongoose.set("useCreateIndex", true)

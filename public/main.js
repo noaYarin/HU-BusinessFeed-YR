@@ -2,6 +2,45 @@ $(function() {
 	$('[data-get="getData"]').on("click", () => {
 		$.get("/cards/allCards", (res) => populateTable(res))
 	})
+	$('[data-get="getUserCards"]').on("click", () => {
+		let userId = $('[data-user="userId"]')[0].value
+		let token = localStorage.getItem("userToken")
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader("authorization", token)
+			},
+			type: "GET",
+			url: `/cards/byUser/${userId}`,
+		})
+			.then((res) => populateTable(res))
+			.catch((err) => console.log(err))
+	})
+	$('[data-get="getCardUnique"]').on("click", () => {
+		let cardUniqueId = $('[data-card="carUniquedId"]')[0].value
+		let token = localStorage.getItem("userToken")
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader("authorization", token)
+			},
+			type: "GET",
+			url: `/cards/byUnique/${cardUniqueId}`,
+		})
+			.then((res) => showSingleCard(res))
+			.catch((err) => console.log(err.responseJSON))
+	})
+	$('[data-get="getCard"]').on("click", () => {
+		let cardId = $('[data-card="cardId"]')[0].value
+		let token = localStorage.getItem("userToken")
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader("authorization", token)
+			},
+			type: "GET",
+			url: `/cards/cardBy/${cardId}`,
+		})
+			.then((res) => showSingleCard(res))
+			.catch((err) => console.log(err.responseJSON))
+	})
 
 	let tempCard = {
 		bName: "HaShahar",
@@ -21,9 +60,24 @@ $(function() {
 				<td>${card.bDesc}</td>
 				<td>${card.cardId}</td>
 				<td>${card.bAddr}</td>
+				<td>${card.ownerId}</td>
 				</tr>`
 			)
 		})
+	}
+	const showSingleCard = (data) => {
+		$("#bCard-table").empty()
+		// $.each(data, (_, card) => {
+		let row = $("#bCard-table").append(
+			`<tr value=${data._id}>
+				<td>${data.bName}</td>
+				<td>${data.bPhone}</td>
+				<td>${data.bDesc}</td>
+				<td>${data.cardId}</td>
+				<td>${data.bAddr}</td>
+				</tr>`
+		)
+		// })
 	}
 
 	let userInfo = {
@@ -48,10 +102,6 @@ $(function() {
 	})
 
 	$('[data-create="createCard"]').on("click", () => {
-		// $.post("/cards/newCard", { ...tempCard }).then((res) =>
-		// 	console.log(res)
-		// )
-		// let token = JSON.stringify(localStorage.getItem("userToken"))
 		let token = localStorage.getItem("userToken")
 		$.ajax({
 			beforeSend: function(request) {
@@ -62,6 +112,6 @@ $(function() {
 			data: { ...tempCard },
 		})
 			.then((res) => console.log(res))
-			.catch((res) => console.log(res))
+			.catch((err) => console.log(err))
 	})
 })
