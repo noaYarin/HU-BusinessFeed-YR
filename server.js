@@ -12,6 +12,7 @@ const express = require("express"),
 	fs = require("fs"),
 	morgan = require("morgan"),
 	path = require("path"),
+	routerCache = require("./routerCache")
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
@@ -26,7 +27,7 @@ const corsOption = {
 	origin: ["http://localhost:2907"],
 }
 app.use(cors(corsOption))
-
+app.use(routerCache)
 
 //#region middlewares
 app.use(express.static("public"))
