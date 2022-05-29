@@ -1,8 +1,6 @@
 const Card = require("../models/card"),
-	_ = require("lodash")
-
-const { generateToken, verifyToken } = require("../services/auth")
-
+	_ = require("lodash"),
+	{ generateToken, verifyToken } = require("../services/auth")
 
 const getAllCards = () => {
 	return new Promise((resolve, reject) => {
@@ -45,10 +43,9 @@ const getOneCardUnique = (cardUniqueId) => {
 }
 const getOneCard = (cardId) => {
 	return new Promise((resolve, reject) => {
-		Card.findOneById(cardId)
-			.then((card) => {
-				card ? resolve(card) : reject("No Card Found!")
-			})
+		Card.findOneById(cardId).then((card) => {
+			card ? resolve(card) : reject("No Card Found!")
+		})
 		Card.findOne(cardId)
 			.then((card) => resolve(card))
 
@@ -68,15 +65,16 @@ const deleteCard = (cardId, ownerId) => {
 		Card.findOneAndDelete({
 			_id: cardId,
 			ownerId,
+		}).then((card) => {
+			if (!card) {
+				reject("You do not have permission to delete this card!")
+			} else {
+				resolve(card)
+			}
 		})
-			.then((card) => {
-				if (!card) {
-					reject("You do not have permission to delete this card!")
-				} else {
-					resolve(card)
-				}
-			})
-	
+	}).catch((err) => reject(err))
+}
+
 module.exports = {
 	getAllCards,
 	getUserCards,

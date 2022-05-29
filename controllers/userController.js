@@ -1,8 +1,8 @@
 require("dotenv").config()
 const User = require("../models/user"),
 	bcrypt = require("bcrypt"),
-	_ = require("lodash")
-const { generateToken, verifyToken } = require("../services/auth")
+	_ = require("lodash"),
+	{ generateToken, verifyToken } = require("../services/auth")
 
 const signUp = (newUser) => {
 	return new Promise((resolve, reject) => {
