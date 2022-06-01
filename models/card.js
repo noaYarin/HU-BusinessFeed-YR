@@ -40,6 +40,9 @@ cardSchema.methods.validateBusinessCard = (bCard) => {
 			.min(10)
 			.required(),
 		cardId: Joi.string(),
+		createdAt: Joi.options({ allowUnknown: true }),
+		updatedAt: Joi.options({ allowUnknown: true }),
+		__v: Joi.options({ allowUnknown: true }),
 	})
 	return joiCardSchema.validate(bCard)
 }

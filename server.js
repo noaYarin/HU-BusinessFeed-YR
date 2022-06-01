@@ -71,6 +71,7 @@ mongoose
 	.connect(`${dbHost}/businessFeed`, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
+		useFindAndModify: false,
 	})
 	.then(() => {
 		app.listen(port, () => {

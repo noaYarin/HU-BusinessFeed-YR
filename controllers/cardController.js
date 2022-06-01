@@ -1,6 +1,5 @@
 const Card = require("../models/card"),
-	_ = require("lodash"),
-	{ generateToken, verifyToken } = require("../services/auth")
+	_ = require("lodash")
 
 const getAllCards = () => {
 	return new Promise((resolve, reject) => {
@@ -52,11 +51,36 @@ const getOneCard = (cardId) => {
 			.catch((err) => reject(err))
 	})
 }
-const updateCard = (cardId, cardData) => {
+const updateCard = (_id, tokenData, cardData) => {
 	return new Promise((resolve, reject) => {
-		Card.findByIdAndUpdate(cardId, cardData)
-			.then((card) => resolve(card))
-			.catch((err) => reject(err))
+		if (!tokenData.isBusiness) {
+			reject("You do not have permission to update this card!")
+		} else {
+			const card = new Card(cardData)
+			let { error } = card.validateBusinessCard(cardData)
+			if (error) {
+				let err = error.details[0].message
+				reject(err)
+			} else {
+				existCard(_id, tokenData._id)
+					.then(() => {
+						Card.findByIdAndUpdate({ _id }, { $set: cardData })
+							.then((updatedCard) => {
+								resolve(updatedCard)
+							})
+							.catch((err) => reject(err))
+					})
+					.catch((err) => reject(err))
+			}
+		}
+	})
+}
+
+let existCard = (cardId, userId) => {
+	return new Promise((resolve, reject) => {
+		Card.findOne({ _id: cardId, ownerId: userId })
+			.then((card) => resolve(card._doc))
+			.catch(() => reject("Card does not exist!"))
 	})
 }
 

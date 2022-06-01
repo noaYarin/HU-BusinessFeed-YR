@@ -1,4 +1,5 @@
 const cardRoutes = require("express").Router(),
+	chalk = require("chalk"),
 	_ = require("lodash"),
 	Suid = require("short-unique-id"),
 	{
@@ -58,9 +59,13 @@ cardRoutes.post("/newCard", (req, res) => {
 })
 
 cardRoutes.put("/cardBy/:id", (req, res) => {
-	updateCard(req.params.cardId, req.body)
+	let { id } = req.params
+	updateCard(id, res.locals.decodedToken, req.body)
 		.then((card) => res.status(200).json(card))
-		.catch((err) => res.status(500).json(err))
+		.catch((err) => {
+			console.log(chalk.red(err))
+			res.status(400).json(err)
+		})
 })
 
 cardRoutes.delete("/cardBy/:id", (req, res) => {
