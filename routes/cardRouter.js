@@ -1,5 +1,6 @@
 const cardRoutes = require("express").Router(),
-	_ = require("lodash")
+	_ = require("lodash"),
+	chalk = require('chalk')
 const Suid = require("short-unique-id")
 
 const {
@@ -9,6 +10,7 @@ const {
 	getOneCard,
 	updateCard,
 	deleteCard,
+	addLike,
 } = require("../controllers/cardController")
 
 cardRoutes.get("/allCards", (req, res) => {
@@ -21,27 +23,25 @@ cardRoutes.get("/allCards", (req, res) => {
 })
 
 cardRoutes.get("/byUser/:id", (req, res) => {
-	// if (!res.locals.decodedToken.isBusiness) {
-	if (false) {
-		res.status(403).json("Not a business user")
+	if (!res.locals.decodedToken.isBusiness) {
+		if (false) {
+			res.status(403).json("Not a business user")
+		}
+		getUserCards(req.params.id)
+			.then((userCards) => {
+				res.status(200).json(userCards)
+			})
+			.catch((err) => {
+				res.status(500).json(err)
+			})
 	}
-	getUserCards(req.params.id)
-		.then((userCards) => {
-			res.status(200).json(userCards)
-		})
-		.catch((err) => res.status(500).json(err))
 })
 
-cardRoutes.get("/byUnique/:id", (req, res) => {
-	getOneCardUnique(req.params.id)
-	.then((card) => res.status(200).json(card))
-	.catch((err) => res.status(500).json(err))
-})
 
 cardRoutes.get("/cardBy/:id", (req, res) => {
 	getOneCard(req.params.id)
-	.then((card) => res.status(200).json(card))
-	.catch((err) => res.status(500).json(err))
+		.then((card) => res.status(200).json(card._doc))
+		.catch((err) => res.status(500).json(err))
 })
 
 cardRoutes.post("/newCard", (req, res) => {
@@ -68,6 +68,20 @@ cardRoutes.put("/:cardId", (req, res) => {
 	updateCard(req.params.cardId, req.body)
 		.then((card) => res.status(200).json(card))
 		.catch((err) => res.status(500).json(err))
+})
+cardRoutes.patch("/cardBy/:id", (req, res) => {
+	if (!req.params.id) {
+		res.status(500)
+			.json("no card ID received!")
+	}
+	addLike(req.params.id, res.locals.decodedToken._id)
+		.then((card) => res.status(200).json(card))
+		.catch((err) => {
+			if (err === "No card found!") {
+				console.log(chalk.red(err))
+			}
+			res.status(500).json(err)
+		})
 })
 
 cardRoutes.delete("/cardBy/:id", (req, res) => {

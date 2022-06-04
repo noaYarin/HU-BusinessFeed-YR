@@ -1,12 +1,13 @@
-$(function() {
+$(function () {
+	$("#bCard").hide()
 	$('[data-get="getData"]').on("click", () => {
 		$.get("/cards/allCards", (res) => populateTable(res))
 	})
 	$('[data-get="getUserCards"]').on("click", () => {
-		let userId = $('[data-user="userId"]')[0].value
+		let userId = $('[data-user="userId"]')[ 0 ].value
 		let token = localStorage.getItem("userToken")
 		$.ajax({
-			beforeSend: function(request) {
+			beforeSend: function (request) {
 				request.setRequestHeader("authorization", token)
 			},
 			type: "GET",
@@ -15,24 +16,12 @@ $(function() {
 			.then((res) => populateTable(res))
 			.catch((err) => console.log(err))
 	})
-	$('[data-get="getCardUnique"]').on("click", () => {
-		let cardUniqueId = $('[data-card="carUniquedId"]')[0].value
-		let token = localStorage.getItem("userToken")
-		$.ajax({
-			beforeSend: function(request) {
-				request.setRequestHeader("authorization", token)
-			},
-			type: "GET",
-			url: `/cards/byUnique/${cardUniqueId}`,
-		})
-			.then((res) => showSingleCard(res))
-			.catch((err) => console.log(err.responseJSON))
-	})
+
 	$('[data-get="getCard"]').on("click", () => {
-		let cardId = $('[data-card="cardId"]')[0].value
+		let cardId = $('[data-card="cardId"]')[ 0 ].value
 		let token = localStorage.getItem("userToken")
 		$.ajax({
-			beforeSend: function(request) {
+			beforeSend: function (request) {
 				request.setRequestHeader("authorization", token)
 			},
 			type: "GET",
@@ -51,6 +40,7 @@ $(function() {
 	}
 
 	const populateTable = (data) => {
+		$("#bCard").hide()
 		$("#bCard-table").empty()
 		$.each(data, (_, card) => {
 			let row = $("#bCard-table").append(
@@ -59,25 +49,18 @@ $(function() {
 				<td>${card.bPhone}</td>
 				<td>${card.bDesc}</td>
 				<td>${card.cardId}</td>
-				<td>${card.bAddr}</td>
-				<td>${card.ownerId}</td>
+				<td>${card._id}</td>
 				</tr>`
 			)
 		})
 	}
-	const showSingleCard = (data) => {
-		$("#bCard-table").empty()
-		// $.each(data, (_, card) => {
-		let row = $("#bCard-table").append(
-			`<tr value=${data._id}>
-				<td>${data.bName}</td>
-				<td>${data.bPhone}</td>
-				<td>${data.bDesc}</td>
-				<td>${data.cardId}</td>
-				<td>${data.bAddr}</td>
-				</tr>`
-		)
-		// })
+	const showSingleCard = (dataObj) => {
+		$("#bCard").show()
+		$("#bCard-data")
+		$.each(dataObj, function (key, value) {
+			$("#bCard-data").append(`<li>${key} : ${value}</li>`)
+		});
+		$("#bCard").show()
 	}
 
 	let userInfo = {
@@ -104,7 +87,7 @@ $(function() {
 	$('[data-create="createCard"]').on("click", () => {
 		let token = localStorage.getItem("userToken")
 		$.ajax({
-			beforeSend: function(request) {
+			beforeSend: function (request) {
 				request.setRequestHeader("authorization", token)
 			},
 			type: "POST",

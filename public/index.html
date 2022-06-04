@@ -54,17 +54,19 @@
 				<button data-get="getUserCards">Get user cards</button>
 			</fieldset>
 		</div>
-			<fieldset>
-				<legend>Search Cards by unique card ID</legend>
-				<label>userId: <input type="text" data-card="cardUniqueId"/></label>
-				<button data-get="getCardUnique">Get unique card</button>
-			</fieldset>
-		</div>
-		</div>
+		<div>
 			<fieldset>
 				<legend>Search Card ID</legend>
-				<label>userId: <input type="text" data-card="cardId"/></label>
-				<button data-get="getCard">Get unique card</button>
+				<label
+					>Card ID or Unique: <input type="text" data-card="cardId"
+				/></label>
+				<button data-get="getCard">Get card</button>
+			</fieldset>
+		</div>
+		<div id="bCard">
+			<fieldset>
+				<legend>Card</legend>
+				<ul id="bCard-data"></ul>
 			</fieldset>
 		</div>
 		<div>
@@ -74,8 +76,7 @@
 					<th>b Phone</th>
 					<th>b Desc</th>
 					<th>card Unique Id</th>
-					<th>b Addr</th>
-					<th>owner Id</th>
+					<th>card _id</th>
 				</thead>
 				<tbody id="bCard-table"></tbody>
 			</table>

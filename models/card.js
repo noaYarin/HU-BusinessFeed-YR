@@ -4,14 +4,14 @@ const mongoose = require("mongoose"),
 
 const cardSchema = new Schema(
 	{
-		ownerId: { type: Schema.Types.ObjectId, required: true },
+		ownerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 		cardId: { type: String, required: true, unique: true },
 		bName: { type: String, required: true },
 		bDesc: { type: String, required: true },
 		bAddr: { type: String, required: true },
 		bPhone: { type: String, required: true },
 		bImageUrl: { type: String, required: true },
-		likes: { type: [], default: [] },
+		likes: [ { type: Schema.Types.ObjectId, ref: 'User' } ]
 	},
 	{ timestamps: true }
 )
@@ -44,6 +44,5 @@ cardSchema.methods.validateBusinessCard = (bCard) => {
 	return joiCardSchema.validate(bCard)
 }
 
-const Card =  mongoose.model("Card", cardSchema)
+const Card = mongoose.model("Card", cardSchema)
 module.exports = Card
-

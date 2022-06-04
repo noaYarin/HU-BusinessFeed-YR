@@ -1,7 +1,6 @@
 const Card = require("../models/card"),
 	_ = require("lodash")
-
-const { generateToken, verifyToken } = require("../services/auth")
+const castObjectId = require('mongoose').Types.ObjectId
 
 
 const getAllCards = () => {
@@ -15,9 +14,6 @@ const getUserCards = (userId) => {
 	return new Promise((resolve, reject) => {
 		Card.find({ ownerId: userId })
 			.then((cards) => resolve(cards))
-			// .then((cards) => {
-			// 	cards ? resolve(cards) : reject("No Cards Found!")
-			// })
 			.catch((err) => reject(err))
 	})
 }
@@ -26,7 +22,7 @@ const insertOneCard = (cardData) => {
 		const card = new Card(cardData)
 		let { error } = card.validateBusinessCard(card._doc)
 		if (error) {
-			let err = error.details[0].message
+			let err = error.details[ 0 ].message
 			reject(err)
 		}
 		card.save()
@@ -34,24 +30,26 @@ const insertOneCard = (cardData) => {
 			.catch((err) => reject(err))
 	})
 }
-const getOneCardUnique = (cardUniqueId) => {
-	return new Promise((resolve, reject) => {
-		Card.findOne({ cardId: cardUniqueId })
-			.then((card) => {
-				card ? resolve(card) : reject("No Card Found!")
-			})
-			.catch((err) => reject(err))
-	})
-}
 const getOneCard = (cardId) => {
 	return new Promise((resolve, reject) => {
-		Card.findOneById(cardId)
+		// if (cardId.length <= 5) {
+		// 	Card.findOne({uniqueId:cardId})
+		// } else {
+		// 	Card.findOneById(cardId)
+		// }
+		// טריק מעניין להראות לירין!!!!!!!!
+		// cardId.length === 5 ?
+		// 		Card.findOne({ cardId: { $in: cardId } }) :
+		// 		Card.findOne({ _id: cardId })
+		Card.findOne({
+			$or: [
+				{ cardId },
+				{ _id: castObjectId.isValid(cardId) ? cardId:null }
+			]
+		})
 			.then((card) => {
 				card ? resolve(card) : reject("No Card Found!")
 			})
-		Card.findOne(cardId)
-			.then((card) => resolve(card))
-
 			.catch((err) => reject(err))
 	})
 }
@@ -62,6 +60,24 @@ const updateCard = (cardId, cardData) => {
 			.catch((err) => reject(err))
 	})
 }
+const addLike = (cardId, userId) => {
+	return new Promise((resolve, reject) => {
+		Card.findOne({ _id: cardId })
+			.then((card) => {
+				// let newLikes = updateLikes(card._doc.likes, userId)
+				Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
+					.then(
+						Card.findById({ _id: cardId })
+							.then((card) => resolve(card))
+					)
+					.catch(() => reject("DB Error!"))
+			})
+			.catch(() => reject("No card found!"))
+	})
+}
+
+
+
 const deleteCard = (cardId) => {
 	return new Promise((resolve, reject) => {
 		Card.findByIdAndDelete(cardId)
@@ -73,8 +89,8 @@ module.exports = {
 	getAllCards,
 	getUserCards,
 	insertOneCard,
-	getOneCardUnique,
 	getOneCard,
 	updateCard,
 	deleteCard,
+	addLike,
 }
