@@ -1,5 +1,6 @@
 const Card = require("../models/card"),
-	_ = require("lodash")
+	_ = require("lodash"),
+	Suid = require("short-unique-id")
 
 const getAllCards = () => {
 	return new Promise((resolve, reject) => {
@@ -12,14 +13,15 @@ const getUserCards = (userId) => {
 	return new Promise((resolve, reject) => {
 		Card.find({ ownerId: userId })
 			.then((cards) => resolve(cards))
-			// .then((cards) => {
-			// 	cards ? resolve(cards) : reject("No Cards Found!")
-			// })
 			.catch((err) => reject(err))
 	})
 }
-const insertOneCard = (cardData) => {
+const insertOneCard = (cardData, ownerId) => {
 	return new Promise((resolve, reject) => {
+		uniqueCardId = new Suid({ length: 5 })
+		_.set(cardData, "likes", [])
+		_.set(cardData, "cardId", uniqueCardId())
+		_.set(cardData, "ownerId", ownerId)
 		const card = new Card(cardData)
 		let { error } = card.validateBusinessCard(card._doc)
 		if (error) {
@@ -84,11 +86,41 @@ let existCard = (cardId, userId) => {
 	})
 }
 
+let setCardId = (_id, isAdmin, adminInput) => {
+	if (!isAdmin) return "You do not have permission to update this card!"
+	return new Promise((resolve, reject) => {
+		checkUniqueId(adminInput)
+			.then(() => {
+				Card.findByIdAndUpdate(
+					{ _id },
+					{ $set: { cardId: adminInput } }
+				)
+					.then((card) => {
+						resolve(card)
+					})
+					.catch((err) => {
+						reject(err)
+					})
+			})
+			.catch((err) => {
+				reject(err)
+			})
+	})
+}
+
+let checkUniqueId = (uniqueCardId) => {
+	return new Promise((resolve, reject) => {
+		Card.findOne({ cardId: uniqueCardId })
+			.then(() => resolve("Card with this unique id not exists!"))
+			.catch(() => reject("Card with this unique id already exist!"))
+	})
+}
+
 const deleteCard = (cardId, ownerId) => {
 	return new Promise((resolve, reject) => {
 		Card.findOneAndDelete({
 			_id: cardId,
-			ownerId,
+			$or: [{ ownerId }, { isAdmin: true }],
 		}).then((card) => {
 			if (!card) {
 				reject("You do not have permission to delete this card!")
@@ -106,5 +138,6 @@ module.exports = {
 	getOneCardUnique,
 	getOneCard,
 	updateCard,
+	setCardId,
 	deleteCard,
 }
