@@ -21,7 +21,7 @@ userRouter.post('/signUp', (req, res) => {
 userRouter.post('/signIn', (req, res) => {
     let user = req.body
     signIn(user)
-        .then(user => res.status(200).json(user))
+        .then(result => res.status(200).json(result))
         .catch(err => res.status(400).json(err))
 })
 

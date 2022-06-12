@@ -32,19 +32,10 @@ const insertOneCard = (cardData) => {
 }
 const getOneCard = (cardId) => {
 	return new Promise((resolve, reject) => {
-		// if (cardId.length <= 5) {
-		// 	Card.findOne({uniqueId:cardId})
-		// } else {
-		// 	Card.findOneById(cardId)
-		// }
-		// טריק מעניין להראות לירין!!!!!!!!
-		// cardId.length === 5 ?
-		// 		Card.findOne({ cardId: { $in: cardId } }) :
-		// 		Card.findOne({ _id: cardId })
 		Card.findOne({
 			$or: [
 				{ cardId },
-				{ _id: castObjectId.isValid(cardId) ? cardId:null }
+				{ _id: castObjectId.isValid(cardId) ? cardId : null }
 			]
 		})
 			.then((card) => {
@@ -62,17 +53,13 @@ const updateCard = (cardId, cardData) => {
 }
 const addLike = (cardId, userId) => {
 	return new Promise((resolve, reject) => {
-		Card.findOne({ _id: cardId })
-			.then((card) => {
-				// let newLikes = updateLikes(card._doc.likes, userId)
-				Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
-					.then(
-						Card.findById({ _id: cardId })
-							.then((card) => resolve(card))
-					)
-					.catch(() => reject("DB Error!"))
-			})
-			.catch(() => reject("No card found!"))
+		Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
+			.then(
+				Card.findById({ _id: cardId })
+					.then((card) => resolve(card))
+			)
+			.catch(() => reject("DB Error!"))
+		reject("No card found!")
 	})
 }
 

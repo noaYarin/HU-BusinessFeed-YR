@@ -16,7 +16,6 @@ const {
 cardRoutes.get("/allCards", (req, res) => {
 	getAllCards()
 		.then((cards) => {
-			// cards = cards.map((model) => model._doc)
 			res.status(200).json(cards)
 		})
 		.catch((err) => res.json(err))
@@ -59,7 +58,7 @@ cardRoutes.post("/newCard", (req, res) => {
 })
 
 cardRoutes.get("/:cardId", (req, res) => {
-	getOneCard(req.params.id)
+	getOneCard(req.params.cardId)
 		.then((card) => res.status(200).json(card))
 		.catch((err) => res.status(404).json(err))
 })
