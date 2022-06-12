@@ -11,7 +11,8 @@ const express = require("express"),
 	cors = require("cors"),
 	fs = require("fs"),
 	morgan = require("morgan"),
-	path = require("path")
+	path = require("path"),
+	routerCache = require("./routerCache")
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
@@ -24,7 +25,7 @@ const corsOption = {
 	origin: [ "http://localhost:4000" ],
 }
 app.use(cors(corsOption))
-
+app.use(routerCache)
 
 //#region middlewares
 app.use(express.static("public"))
@@ -38,15 +39,15 @@ app.use((req, res, next) => {
 	if (auth.authorizedRequests(req.originalUrl)) {
 		return next()
 	}
-
-	token = req.headers[ "authorization" ]
+	token = req.headers["authorization"]
 	if (token) {
+		token = token.replace("Bearer ", "")
 		auth.verifyToken(token)
 			.then((data) => {
 				res.locals.decodedToken = data
 				return next()
 			})
-			.catch((err) => res.status(401).json("Invalid Token!"))
+			.catch(() => res.status(401).json("Invalid Token!"))
 	} else {
 		res.status(401).json("Unaothorized access!")
 	}
@@ -64,6 +65,7 @@ mongoose
 	.connect(`${dbHost}/businessFeed`, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
+		useFindAndModify: false,
 	})
 	.then(() => {
 		app.listen(port, () => {

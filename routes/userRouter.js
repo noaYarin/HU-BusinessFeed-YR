@@ -1,39 +1,38 @@
-const express = require('express'),
-    userRouter = express.Router(),
-    chalk = require('chalk'),
-    {
-        signUp,
-        signIn,
-        verifyToken,
-        getUser,
-    } = require('../controllers/userController')
+const express = require("express"),
+	userRouter = express.Router(),
+	chalk = require("chalk"),
+	{ signUp, signIn, getUser } = require("../controllers/userController")
 
-userRouter.post('/signUp', (req, res) => {
-    let newUser = req.body
-    signUp(newUser)
-        .then(user => res.status(200).json(user))
-        .catch(err => {
-            console.log(chalk.red(err))
-            res.status(400).json(err)
-        })
+userRouter.post("/signUp", (req, res) => {
+	let newUser = req.body
+	signUp(newUser)
+		.then((user) => res.status(200).json(user))
+		.catch((err) => {
+			console.log(chalk.red(err))
+			res.status(400).json(err)
+		})
 })
 
+<<<<<<< HEAD
 userRouter.post('/signIn', (req, res) => {
     let user = req.body
     signIn(user)
         .then(result => res.status(200).json(result))
         .catch(err => res.status(400).json(err))
+=======
+userRouter.post("/signIn", (req, res) => {
+	let user = req.body
+	signIn(user)
+		.then((user) => res.status(200).json(user))
+		.catch((err) => res.status(400).json(err))
+>>>>>>> d09e0083494b136e7f01424f603e9ce181834943
 })
 
-userRouter.get('/', (req, res) => {
-    const authHeader = req.headers['authorization']
-    verifyToken(authHeader)
-        .then(user => {
-            getUser(user._id)
-                .then(user => res.status(200).json(user))
-                .catch(err => res.status(401).json(err))
-        })
-        .catch(() => res.status(401).json('Unathorized access'))
+userRouter.get("/:userId", (req, res) => {
+	let { userId } = req.params
+	getUser(userId)
+		.then((user) => res.status(200).json(user))
+		.catch((err) => res.status(401).json(err))
 })
 
 module.exports = userRouter

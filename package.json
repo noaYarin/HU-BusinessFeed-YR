@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node .",
 		"dev": "nodemon node .",
-		"test": "mocha "
+		"test": "mocha --no-timeouts"
 	},
 	"dependencies": {
 		"@types/joi": "^17.2.3",
@@ -20,6 +20,7 @@
 		"lodash": "^4.17.21",
 		"mongoose": "^5.0.0",
 		"morgan": "^1.9.0",
+		"node-cache": "^5.1.2",
 		"short-unique-id": "^4.4.4"
 	},
 	"devDependencies": {

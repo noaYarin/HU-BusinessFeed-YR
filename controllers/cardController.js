@@ -1,5 +1,6 @@
 const Card = require("../models/card"),
-	_ = require("lodash")
+	_ = require("lodash"),
+	Suid = require("short-unique-id")
 const castObjectId = require('mongoose').Types.ObjectId
 
 
@@ -17,8 +18,12 @@ const getUserCards = (userId) => {
 			.catch((err) => reject(err))
 	})
 }
-const insertOneCard = (cardData) => {
+const insertOneCard = (cardData, ownerId) => {
 	return new Promise((resolve, reject) => {
+		uniqueCardId = new Suid({ length: 5 })
+		_.set(cardData, "likes", [])
+		_.set(cardData, "cardId", uniqueCardId())
+		_.set(cardData, "ownerId", ownerId)
 		const card = new Card(cardData)
 		let { error } = card.validateBusinessCard(card._doc)
 		if (error) {
@@ -44,13 +49,62 @@ const getOneCard = (cardId) => {
 			.catch((err) => reject(err))
 	})
 }
-const updateCard = (cardId, cardData) => {
+
+const updateCard = (_id, tokenData, cardData) => {
 	return new Promise((resolve, reject) => {
-		Card.findByIdAndUpdate(cardId, cardData)
-			.then((card) => resolve(card))
-			.catch((err) => reject(err))
+		if (!tokenData.isBusiness) {
+			reject("You do not have permission to update this card!")
+		} else {
+			const card = new Card(cardData)
+			let { error } = card.validateBusinessCard(cardData)
+			if (error) {
+				let err = error.details[0].message
+				reject(err)
+			} else {
+				existCard(_id, tokenData._id)
+					.then(() => {
+						Card.findByIdAndUpdate({ _id }, { $set: cardData })
+							.then((updatedCard) => {
+								resolve(updatedCard)
+							})
+							.catch((err) => reject(err))
+					})
+					.catch((err) => reject(err))
+			}
+		}
 	})
 }
+
+let existCard = (cardId, userId) => {
+	return new Promise((resolve, reject) => {
+		Card.findOne({ _id: cardId, ownerId: userId })
+			.then((card) => resolve(card._doc))
+			.catch(() => reject("Card does not exist!")
+	})
+}
+
+let setCardId = (_id, isAdmin, adminInput) => {
+	if (!isAdmin) return "You do not have permission to update this card!"
+	return new Promise((resolve, reject) => {
+		checkUniqueId(adminInput)
+			.then(() => {
+				Card.findByIdAndUpdate(
+					{ _id },
+					{ $set: { cardId: adminInput } }
+				)
+					.then((card) => {
+						resolve(card)
+					})
+					.catch((err) => {
+						reject(err)
+					})
+			})
+			.catch((err) => {
+				reject(err)
+			})
+	})
+}
+
 const addLike = (cardId, userId) => {
 	return new Promise((resolve, reject) => {
 		Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
@@ -64,20 +118,36 @@ const addLike = (cardId, userId) => {
 }
 
 
-
-const deleteCard = (cardId) => {
+let checkUniqueId = (uniqueCardId) => {
 	return new Promise((resolve, reject) => {
-		Card.findByIdAndDelete(cardId)
-			.then((card) => resolve(card))
-			.catch((err) => reject(err))
+		Card.findOne({ cardId: uniqueCardId })
+			.then(() => resolve("Card with this unique id not exists!"))
+			.catch(() => reject("Card with this unique id already exist!"))
 	})
 }
+
+const deleteCard = (cardId, ownerId) => {
+	return new Promise((resolve, reject) => {
+		Card.findOneAndDelete({
+			_id: cardId,
+			$or: [{ ownerId }, { isAdmin: true }],
+		}).then((card) => {
+			if (!card) {
+				reject("You do not have permission to delete this card!")
+			} else {
+				resolve(card)
+			}
+		})
+	}).catch((err) => reject(err))
+}
+
 module.exports = {
 	getAllCards,
 	getUserCards,
 	insertOneCard,
 	getOneCard,
 	updateCard,
+	setCardId,
 	deleteCard,
 	addLike,
 }
