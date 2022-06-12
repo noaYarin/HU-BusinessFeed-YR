@@ -11,7 +11,7 @@ const cardSchema = new Schema(
 		bAddr: { type: String, required: true },
 		bPhone: { type: String, required: true },
 		bImageUrl: { type: String, required: true },
-		likes: { type: [], default: [] },
+		likes: [ { type: Schema.Types.ObjectId, ref: 'User' } ]
 	},
 	{ timestamps: true }
 )

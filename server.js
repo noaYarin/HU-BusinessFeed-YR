@@ -16,15 +16,13 @@ const express = require("express"),
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
-	{
-		flags: "a",
-	}
+	{ flags: "a" }
 )
 
 app.use(morgan("combined", { stream: accessLogStream }))
 
 const corsOption = {
-	origin: ["http://localhost:2907"],
+	origin: [ "http://localhost:4000" ],
 }
 app.use(cors(corsOption))
 app.use(routerCache)
@@ -33,11 +31,7 @@ app.use(routerCache)
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors(corsOptions))
-var corsOptions = {
-	origin: "http://example.com",
-	optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-}
+
 //#endregion
 
 //#region Custom middleware
