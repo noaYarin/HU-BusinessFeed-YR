@@ -28,7 +28,7 @@ const authorizedRequests = (url) => {
 		"/user/signIn",
 		"/user/signUp",
 		"/favicon.ico",
-		"/cards/byUser"
+		"/cards/byUser",
 	]
 	// req.url in requests
 	return requests.indexOf(url) > -1 ? true : false
