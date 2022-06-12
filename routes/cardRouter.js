@@ -51,9 +51,14 @@ cardRoutes.post("/newCard", (req, res) => {
 		.catch((err) => res.status(500).json(err))
 })
 
+<<<<<<< HEAD
+cardRoutes.get("/:cardId", (req, res) => {
+	getOneCard(req.params.cardId)
+=======
 cardRoutes.put("/cardBy/:id", (req, res) => {
 	let { id } = req.params
 	updateCard(id, res.locals.decodedToken, req.body)
+>>>>>>> d09e0083494b136e7f01424f603e9ce181834943
 		.then((card) => res.status(200).json(card))
 		.catch((err) => {
 			console.log(chalk.red(err))

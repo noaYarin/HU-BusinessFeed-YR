@@ -6,45 +6,84 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 		<title>Business Feed</title>
+		<style>
+			tr,
+			td {
+				padding: 5px;
+				margin: 5px;
+			}
+		</style>
 	</head>
-
 	<body>
-		<div>
-			<button id="signin">signin</button>
-			<button id="signout">signout</button>
+		<nav>
+			<button id="signin">Sign In!</button>
 			<button id="register">register</button>
+			<button id="signout">Sign Out!</button>
+		</nav>
+		<div>
+			<fieldset id="signin-signup">
+				<legend>Sign In or Sign Up!</legend>
+				<div id="signin-fields">
+					<label>
+						Email:
+						<input
+							type="text"
+							name="email"
+							placeholder="your email..."
+						/>
+					</label>
+					<br />
+					<label>
+						Password:
+						<input
+							type="password"
+							name="password"
+							placeholder="password"
+						/>
+					</label>
+				</div>
+				<div id="register-fields">
+					<label>Username: <input type="text" name="userName"/></label
+					><br />
+					<label
+						>Business?
+						<input type="checkbox" name="isBusiness"/></label
+					><br />
+					<button id="signup">Sign Up!</button>
+					<button id="cancel-signup">Cancel</button>
+				</div>
+				<br />
+				<div id="user-controlls">
+					<!-- <button id="signin">Sign In!</button>
+					<button id="register">register</button> -->
+				</div>
+			</fieldset>
+			<!-- <button id="signout">Sign Out!</button> -->
 		</div>
 		<div>
-			<fieldset>
+			<fieldset id="card-fields">
 				<legend>Create a Business Card</legend>
-				<label
-					>bName:
-					<input type="text" value="HaShahar" disabled/></label
-				><br />
-				<label
-					>bDesc:
-					<input
-						type="text"
-						value="chocolate in any form"
-						disabled/></label
-				><br />
-				<label
-					>bAddr:
-					<input type="text" value="Tel-Aviv" disabled/></label
-				><br />
-				<label
-					>bPhone:
-					<input type="text" value="097964123" disabled/></label
-				><br />
-				<label
-					>bImageUrl:
-					<input
-						type="text"
-						value="https://has.co.il/assets/images/hasbox.png"
-						disabled/></label
-				><br />
+				<label>
+					Business Name:<input type="text" name="bName" />
+				</label>
+				<br />
+				<label>
+					Business Description:<input type="text" name="bDesc" />
+				</label>
+				<br />
+				<label>
+					Business Address:<input type="text" name="bAddr" />
+				</label>
+				<br />
+				<label>
+					Business Phone:<input type="text" name="bPhone" />
+				</label>
+				<br />
+				<label>
+					Business Image(Link):<input type="text" name="bImageUrl" />
+				</label>
+				<br />
 				<button data-create="createCard">Create Card</button>
-				<button data-get="getData">Get All Cards</button>
 			</fieldset>
 		</div>
 		<div>
@@ -52,6 +91,12 @@
 				<legend>Search Cards by user ID</legend>
 				<label>userId: <input type="text" data-user="userId"/></label>
 				<button data-get="getUserCards">Get user cards</button>
+			</fieldset>
+		</div>
+		<div id="uCard">
+			<fieldset>
+				<legend>Card</legend>
+				<ul id="uCard-data"></ul>
 			</fieldset>
 		</div>
 		<div>
@@ -69,17 +114,25 @@
 				<ul id="bCard-data"></ul>
 			</fieldset>
 		</div>
-		<div>
-			<table>
-				<thead>
-					<th>b Name</th>
-					<th>b Phone</th>
-					<th>b Desc</th>
-					<th>card Unique Id</th>
-					<th>card _id</th>
-				</thead>
-				<tbody id="bCard-table"></tbody>
-			</table>
+		<button data-get="getData">Get All Cards</button>
+		<button data-get="showLocal">Get All Cards(local DB)</button>
+		<div id="cards-table">
+			<fieldset>
+				<legend>
+					Cards Table
+					<button data-clear="clear-table">Hide</button>
+				</legend>
+				<table>
+					<thead>
+						<th>Business Name</th>
+						<th>Business Phone</th>
+						<th>Business Desc</th>
+						<th>Unique Id</th>
+						<th>card _id</th>
+					</thead>
+					<tbody id="bCard-table"></tbody>
+				</table>
+			</fieldset>
 		</div>
 	</body>
 	<script src="./main.js"></script>

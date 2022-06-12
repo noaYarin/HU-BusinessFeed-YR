@@ -40,7 +40,7 @@ const getOneCard = (cardId) => {
 		Card.findOne({
 			$or: [
 				{ cardId },
-				{ _id: castObjectId.isValid(cardId) ? cardId:null }
+				{ _id: castObjectId.isValid(cardId) ? cardId : null }
 			]
 		})
 			.then((card) => {
@@ -107,17 +107,13 @@ let setCardId = (_id, isAdmin, adminInput) => {
 
 const addLike = (cardId, userId) => {
 	return new Promise((resolve, reject) => {
-		Card.findOne({ _id: cardId })
-			.then((card) => {
-				// let newLikes = updateLikes(card._doc.likes, userId)
-				Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
-					.then(
-						Card.findById({ _id: cardId })
-							.then((card) => resolve(card))
-					)
-					.catch(() => reject("DB Error!"))
-			})
-			.catch(() => reject("No card found!"))
+		Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
+			.then(
+				Card.findById({ _id: cardId })
+					.then((card) => resolve(card))
+			)
+			.catch(() => reject("DB Error!"))
+		reject("No card found!")
 	})
 }
 

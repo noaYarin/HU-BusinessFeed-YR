@@ -13,11 +13,19 @@ userRouter.post("/signUp", (req, res) => {
 		})
 })
 
+<<<<<<< HEAD
+userRouter.post('/signIn', (req, res) => {
+    let user = req.body
+    signIn(user)
+        .then(result => res.status(200).json(result))
+        .catch(err => res.status(400).json(err))
+=======
 userRouter.post("/signIn", (req, res) => {
 	let user = req.body
 	signIn(user)
 		.then((user) => res.status(200).json(user))
 		.catch((err) => res.status(400).json(err))
+>>>>>>> d09e0083494b136e7f01424f603e9ce181834943
 })
 
 userRouter.get("/:userId", (req, res) => {
