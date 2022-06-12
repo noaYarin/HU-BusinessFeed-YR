@@ -2,7 +2,7 @@ require("dotenv").config()
 const User = require("../models/user"),
 	bcrypt = require("bcrypt"),
 	_ = require("lodash"),
-	{ generateToken, verifyToken } = require("../services/auth")
+	{ generateToken } = require("../services/auth")
 
 const signUp = (newUser) => {
 	return new Promise((resolve, reject) => {
@@ -49,7 +49,6 @@ const getUser = (userId) => {
 	return new Promise((resolve, reject) => {
 		User.findById({ _id: userId })
 			.then((user) => {
-				console.log(user)
 				_.unset(user._doc, "password")
 				resolve(user)
 			})

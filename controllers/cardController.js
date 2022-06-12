@@ -44,13 +44,9 @@ const getOneCardUnique = (cardUniqueId) => {
 }
 const getOneCard = (cardId) => {
 	return new Promise((resolve, reject) => {
-		Card.findOneById(cardId).then((card) => {
+		Card.findOne({ _id: cardId }).then((card) => {
 			card ? resolve(card) : reject("No Card Found!")
 		})
-		Card.findOne(cardId)
-			.then((card) => resolve(card))
-
-			.catch((err) => reject(err))
 	})
 }
 const updateCard = (_id, tokenData, cardData) => {

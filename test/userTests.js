@@ -8,41 +8,44 @@ const chai = require("chai"),
 chai.use(chaiHttp)
 
 describe("User controller functions", () => {
-	it("Should sign a new user ", () => {
+	it("Should sign up a new user ", (done) => {
 		chai.request(server)
 			.post("/user/signUp")
+			.type("form")
+			.set("content-type", "application/json")
 			.send({
-				userName: "yael",
-				email: "yael12@gmail.com",
+				userName: "yair",
+				email: "yair21212@gmail.com",
 				password: "123456AzA",
 				isBusiness: false,
 			})
 			.end(function(err, res) {
 				expect(err).to.be.null
 				assert.equal(res.status, 200)
-				assert.equal(res.type, "application/json")
+				done(err)
 			})
 	})
-
-	it("Should sign in a user ", () => {
+	it("Should sign in a user ", (done) => {
 		chai.request(server)
 			.post("/user/signIn")
-			.send({ email: "yael12@gmail.com", password: "123456AzA" })
-			.end(function(err, res) {
+			.set("content-type", "application/json")
+			.send({ email: "yair21212@gmail.com", password: "123456AzA" })
+			.end((err, res) => {
+				expect(res).to.have.status(200)
 				expect(err).to.be.null
-				res.type.should.equal("application/json")
+				done(err)
 			})
 	})
-
-	it("Get user by id", () => {
+	it("Get user by id", (done) => {
+		const userId = "6283f85c9d9fcf6f4896878b"
 		chai.request(server)
-			.get("/user")
-			.then(function(res) {
+			.get("/user/" + userId)
+			.set("authorization", "Bearer " + process.env.TOKEN)
+			.set("content-type", "application/json")
+			.end((err, res) => {
 				expect(res).to.have.status(200)
 				expect(res.body).to.be.an("object")
-			})
-			.catch(function(err) {
-				throw err
+				done(err)
 			})
 	})
 })

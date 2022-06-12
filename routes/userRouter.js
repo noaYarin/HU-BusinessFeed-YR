@@ -1,12 +1,7 @@
 const express = require("express"),
 	userRouter = express.Router(),
 	chalk = require("chalk"),
-	{
-		signUp,
-		signIn,
-		verifyToken,
-		getUser,
-	} = require("../controllers/userController")
+	{ signUp, signIn, getUser } = require("../controllers/userController")
 
 userRouter.post("/signUp", (req, res) => {
 	let newUser = req.body

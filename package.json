@@ -6,7 +6,7 @@
 	"scripts": {
 		"start": "node .",
 		"dev": "nodemon node .",
-		"test": "mocha "
+		"test": "mocha --no-timeouts"
 	},
 	"dependencies": {
 		"@types/joi": "^17.2.3",
