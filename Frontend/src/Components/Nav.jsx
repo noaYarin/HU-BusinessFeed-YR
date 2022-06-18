@@ -1,27 +1,37 @@
 import { NavLink } from "react-router-dom";
 function Nav() {
+  const navLink = ({ isActive }) => (isActive ? "font-bold" : "font-thin");
+
   return (
-    <div className="nav">
-      <nav>
-        <ul>
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="authentication">Authentication</NavLink>
-          </li>
-          <li>
-            <NavLink to="about">About</NavLink>
-          </li>
-          <li>
-            <NavLink to="userProfile">User Profile</NavLink>
-          </li>
-          <li>
-            <NavLink to="contactUs">Contact Us</NavLink>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    <nav>
+      <ul className="flex list-none">
+        <li className="ml-4">
+          <NavLink to="/" className={navLink}>
+            Home
+          </NavLink>
+        </li>
+        <li className="ml-4">
+          <NavLink to="authentication" className={navLink}>
+            Authentication
+          </NavLink>
+        </li>
+        <li className="ml-4">
+          <NavLink to="about" className={navLink}>
+            About
+          </NavLink>
+        </li>
+        <li className="ml-4">
+          <NavLink to="userProfile" className={navLink}>
+            User Profile
+          </NavLink>
+        </li>
+        <li className="ml-4">
+          <NavLink to="contactUs" className={navLink}>
+            Contact Us
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
   );
 }
 
