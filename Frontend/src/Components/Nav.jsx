@@ -10,11 +10,11 @@ function Nav() {
             Home
           </NavLink>
         </li>
-        <li className="ml-4">
+        {/* <li className="ml-4">
           <NavLink to="authentication" className={navLink}>
             Authentication
           </NavLink>
-        </li>
+        </li> */}
         <li className="ml-4">
           <NavLink to="about" className={navLink}>
             About
