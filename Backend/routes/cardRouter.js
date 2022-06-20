@@ -1,6 +1,6 @@
 const cardRoutes = require("express").Router(),
 	_ = require("lodash"),
-	chalk = require('chalk')
+	chalk = require("chalk")
 const Suid = require("short-unique-id")
 
 const {
@@ -23,18 +23,16 @@ cardRoutes.get("/allCards", (req, res) => {
 
 cardRoutes.get("/byUser/:id", (req, res) => {
 	if (!res.locals.decodedToken.isBusiness) {
-			res.status(403).json("Not a business user")
-		}
-		getUserCards(req.params.id)
-			.then((userCards) => {
-				res.status(200).json(userCards)
-			})
-			.catch((err) => {
-				res.status(500).json(err)
-			})
+		res.status(403).json("Not a business user")
 	}
+	getUserCards(req.params.id)
+		.then((userCards) => {
+			res.status(200).json(userCards)
+		})
+		.catch((err) => {
+			res.status(500).json(err)
+		})
 })
-
 
 cardRoutes.get("/cardBy/:id", (req, res) => {
 	getOneCard(req.params.id)
@@ -51,14 +49,9 @@ cardRoutes.post("/newCard", (req, res) => {
 		.catch((err) => res.status(500).json(err))
 })
 
-<<<<<<< HEAD
-cardRoutes.get("/:cardId", (req, res) => {
-	getOneCard(req.params.cardId)
-=======
 cardRoutes.put("/cardBy/:id", (req, res) => {
 	let { id } = req.params
 	updateCard(id, res.locals.decodedToken, req.body)
->>>>>>> d09e0083494b136e7f01424f603e9ce181834943
 		.then((card) => res.status(200).json(card))
 		.catch((err) => {
 			console.log(chalk.red(err))
@@ -74,8 +67,7 @@ cardRoutes.patch("/cardBy/:cardId", (req, res) => {
 })
 cardRoutes.patch("/cardBy/:id", (req, res) => {
 	if (!req.params.id) {
-		res.status(500)
-			.json("no card ID received!")
+		res.status(500).json("no card ID received!")
 	}
 	addLike(req.params.id, res.locals.decodedToken._id)
 		.then((card) => res.status(200).json(card))

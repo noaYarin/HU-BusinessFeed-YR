@@ -1,8 +1,7 @@
 const Card = require("../models/card"),
 	_ = require("lodash"),
 	Suid = require("short-unique-id")
-const castObjectId = require('mongoose').Types.ObjectId
-
+const castObjectId = require("mongoose").Types.ObjectId
 
 const getAllCards = () => {
 	return new Promise((resolve, reject) => {
@@ -27,7 +26,7 @@ const insertOneCard = (cardData, ownerId) => {
 		const card = new Card(cardData)
 		let { error } = card.validateBusinessCard(card._doc)
 		if (error) {
-			let err = error.details[ 0 ].message
+			let err = error.details[0].message
 			reject(err)
 		}
 		card.save()
@@ -40,8 +39,8 @@ const getOneCard = (cardId) => {
 		Card.findOne({
 			$or: [
 				{ cardId },
-				{ _id: castObjectId.isValid(cardId) ? cardId : null }
-			]
+				{ _id: castObjectId.isValid(cardId) ? cardId : null },
+			],
 		})
 			.then((card) => {
 				card ? resolve(card) : reject("No Card Found!")
@@ -52,7 +51,7 @@ const getOneCard = (cardId) => {
 
 const updateCard = (_id, tokenData, cardData) => {
 	return new Promise((resolve, reject) => {
-		if (!tokenData.isBusiness) {
+		if (!tokenData.isBusiness || !tokenData.isAdmin) {
 			reject("You do not have permission to update this card!")
 		} else {
 			const card = new Card(cardData)
@@ -79,7 +78,7 @@ let existCard = (cardId, userId) => {
 	return new Promise((resolve, reject) => {
 		Card.findOne({ _id: cardId, ownerId: userId })
 			.then((card) => resolve(card._doc))
-			.catch(() => reject("Card does not exist!")
+			.catch(() => reject("Card does not exist!"))
 	})
 }
 
@@ -108,15 +107,11 @@ let setCardId = (_id, isAdmin, adminInput) => {
 const addLike = (cardId, userId) => {
 	return new Promise((resolve, reject) => {
 		Card.updateOne({ _id: cardId }, { $addToSet: { likes: userId } })
-			.then(
-				Card.findById({ _id: cardId })
-					.then((card) => resolve(card))
-			)
+			.then(Card.findById({ _id: cardId }).then((card) => resolve(card)))
 			.catch(() => reject("DB Error!"))
 		reject("No card found!")
 	})
 }
-
 
 let checkUniqueId = (uniqueCardId) => {
 	return new Promise((resolve, reject) => {

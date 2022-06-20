@@ -18,7 +18,7 @@ const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
 	{ flags: "a" }
 )
-
+console.log(accessLogStream)
 app.use(morgan("combined", { stream: accessLogStream }))
 
 const corsOption = {

@@ -11,7 +11,7 @@ const cardSchema = new Schema(
 		bAddr: { type: String, required: true },
 		bPhone: { type: String, required: true },
 		bImageUrl: { type: String, required: true },
-		likes: [ { type: Schema.Types.ObjectId, ref: 'User' } ]
+		likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
 	},
 	{ timestamps: true }
 )
@@ -39,7 +39,7 @@ cardSchema.methods.validateBusinessCard = (bCard) => {
 		bImageUrl: Joi.string()
 			.min(10)
 			.required(),
-		cardId: Joi.string(),
+		cardId: Joi.string().trim(),
 		createdAt: Joi.options({ allowUnknown: true }),
 		updatedAt: Joi.options({ allowUnknown: true }),
 		__v: Joi.options({ allowUnknown: true }),
