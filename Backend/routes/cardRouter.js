@@ -80,7 +80,7 @@ cardRoutes.patch("/cardBy/:id", (req, res) => {
 })
 
 cardRoutes.delete("/cardBy/:id", (req, res) => {
-	deleteCard(req.params.id, res.locals.decodedToken._id)
+	deleteCard(req.params.id, res.locals.decodedToken)
 		.then((card) => res.status(200).json(card))
 		.catch((err) => res.status(401).json(err))
 })

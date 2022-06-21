@@ -9,7 +9,7 @@ const signUp = (newUser) => {
 		let user = new User(newUser)
 		let { error } = user.validateUserFields(user._doc)
 		if (error) {
-			let err = error.details[ 0 ].message
+			let err = error.details[0].message
 			reject(err)
 		} else {
 			user.password = user.hashUserPassword(user.password)
@@ -36,9 +36,7 @@ const signIn = (user) => {
 						if (err) reject(err)
 						if (!results) reject("Wrong password")
 						else {
-							let token = generateToken(recordedUser)
-							let user = recordedUser
-							resolve({token,user})
+							resolve(generateToken(recordedUser))
 						}
 					}
 				)
