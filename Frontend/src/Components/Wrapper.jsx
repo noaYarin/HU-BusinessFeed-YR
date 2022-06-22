@@ -7,7 +7,7 @@ import UserProfile from "../Pages/UserProfile";
 
 function Wrapper() {
   return (
-    <div className="flex flex-col align-middle h-32 justify-center mt-28">
+    <div className="mt-32 mb-32">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
