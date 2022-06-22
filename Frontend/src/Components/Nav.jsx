@@ -4,7 +4,7 @@ function Nav() {
 
   return (
     <nav>
-      <ul className="flex list-none">
+      <ul className="flex justify-evenly">
         <li className="ml-4">
           <NavLink to="/" className={navLink}>
             Home
@@ -21,13 +21,13 @@ function Nav() {
           </NavLink>
         </li>
         <li className="ml-4">
-          <NavLink to="userProfile" className={navLink}>
-            User Profile
+          <NavLink to="contactUs" className={navLink}>
+            Contact Us
           </NavLink>
         </li>
         <li className="ml-4">
-          <NavLink to="contactUs" className={navLink}>
-            Contact Us
+          <NavLink to="userProfile" className={navLink}>
+            User Profile
           </NavLink>
         </li>
       </ul>
