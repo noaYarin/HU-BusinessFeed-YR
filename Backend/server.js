@@ -22,7 +22,7 @@ console.log(accessLogStream)
 app.use(morgan("combined", { stream: accessLogStream }))
 
 const corsOption = {
-	origin: [ "http://localhost:4000" ],
+	origin: ["http://localhost:3000"],
 }
 app.use(cors(corsOption))
 app.use(routerCache)

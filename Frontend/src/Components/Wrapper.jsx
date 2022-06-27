@@ -4,6 +4,7 @@ import About from "../Pages/About";
 import Authentication from "../Pages/Authentication";
 import ContactUs from "../Pages/ContactUs";
 import UserProfile from "../Pages/UserProfile";
+import CardForm from "./CardForm";
 
 function Wrapper() {
   return (
@@ -14,6 +15,7 @@ function Wrapper() {
         <Route path="/authentication" element={<Authentication />} />
         <Route path="/contactUs" element={<ContactUs />} />
         <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/createCard" element={<CardForm />} />
       </Routes>
     </div>
   );
