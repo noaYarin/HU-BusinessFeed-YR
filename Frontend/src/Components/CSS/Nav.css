@@ -1,0 +1,15 @@
+.isOpen {
+  display: block;
+  height: 50vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  background-color: #91c788;
+  position: absolute;
+  left: 0;
+  top: 80px;
+  padding: 20px;
+}
+.isClose {
+  display: none;
+}

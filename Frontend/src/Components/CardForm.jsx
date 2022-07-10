@@ -1,33 +1,61 @@
+import Input from "./Input";
+import React, { useState } from "react";
 import Button from "./Button";
+import Image from "./Image";
+import "./CSS/CardForm.css";
+
 function CardForm() {
-  const inputStyle =
-    "bg-transparent border-b-2 border-green-200 inline-block text-gray-700 mr-3 py-1 px-2 focus:outline-none mb-4";
+  const [img, setImg] = useState();
+
+  const onImageChange = (e) => {
+    const [file] = e.target.files;
+    setImg(URL.createObjectURL(file));
+  };
 
   return (
     <div className="flex justify-center align-middle">
       <fieldset className="flex justify-center p-3 m-3 rounded-2xl flex-col">
-        <label for="name" className="font-bold ">
-          Business Name:
-        </label>
-        <input name="name" type="text" className={inputStyle} />
-        <label for="description" className="font-bold">
-          Business Description:
-        </label>
-        <input name="description" type="text" className={inputStyle} />
-        <label for="address" className="font-bold">
-          Business Address:
-        </label>
-        <input name="address" type="text" className={inputStyle} />
-        <label for="phone" className="font-bold">
-          Business Phone:
-        </label>
-        <input name="phone" type="tel" className={inputStyle} />
-        <label for="image" className="font-bold">
-          Business Image:
-        </label>
-        <input name="image" type="img" className={inputStyle} />
+        <Input
+          id="name"
+          name="name"
+          text="Business Name:"
+          type="text"
+          inputStyle="inputStyle"
+          labelStyle="labelStyle"
+        />
+        <Input
+          name="description"
+          text="Business Description:"
+          type="text"
+          labelStyle="labelStyle"
+          inputStyle="inputStyle"
+        />
+        <Input
+          name="address"
+          text="Business Address:"
+          type="text"
+          labelStyle="labelStyle"
+          inputStyle="inputStyle"
+        />
+        <Input
+          name="phone"
+          text="Business Phone:"
+          type="tel"
+          labelStyle="labelStyle"
+          inputStyle="inputStyle"
+        />
+        <Input
+          name="image"
+          text="Business Image:"
+          type="file"
+          onChange={onImageChange}
+          accept=".gif,.jpg,.jpeg,.png,.doc,.docx"
+          labelStyle="labelStyle"
+          inputStyle="m-6 "
+        />
         <Button buttonStyle="bg-green-300 w-22 p-2" text="Create Card" />
       </fieldset>
+      <Image src={img} alt="Business Image" imageStyle="p-3 m-2 w-4/12" />
     </div>
   );
 }
