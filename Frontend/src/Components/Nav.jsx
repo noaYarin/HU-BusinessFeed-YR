@@ -1,4 +1,5 @@
-import { NavLink, Link } from "react-router-dom";
+import NavItem from "./NavItem";
+import { Link } from "react-router-dom";
 import Button from "./Button";
 import React, { useState } from "react";
 import { GoThreeBars } from "react-icons/go";
@@ -19,26 +20,34 @@ function Nav() {
         <GoThreeBars size={35} />
       </button>
       <ul className={`xs:hidden flex  ${toggleNav ? "isOpen" : null}`}>
-        <li className="m-2">
-          <NavLink to="/" className={navLink} onClick={closeLink}>
-            Home
-          </NavLink>
-        </li>
-        <li className="m-2">
-          <NavLink to="about" className={navLink} onClick={closeLink}>
-            About
-          </NavLink>
-        </li>
-        <li className="m-2">
-          <NavLink to="contactUs" className={navLink} onClick={closeLink}>
-            Contact Us
-          </NavLink>
-        </li>
-        <li className="m-2">
-          <NavLink to="userProfile" className={navLink} onClick={closeLink}>
-            User Profile
-          </NavLink>
-        </li>
+        <NavItem
+          itemClass="m-2"
+          to="/"
+          onClick={closeLink}
+          className={navLink}
+          text="Home"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="about"
+          onClick={closeLink}
+          className={navLink}
+          text="About"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="contactUs"
+          onClick={closeLink}
+          className={navLink}
+          text="Contact Us"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="userProfile"
+          onClick={closeLink}
+          className={navLink}
+          text="User Profile"
+        />
         <li className="m-2">
           <Link to="/authentication" onClick={closeLink}>
             <Button buttonStyle="bg-cream p-1 mb-5 " text="Sign In" />
