@@ -1,34 +1,57 @@
-import { NavLink } from "react-router-dom";
+import NavItem from "./NavItem";
+import { Link } from "react-router-dom";
+import Button from "./Button";
+import React, { useState } from "react";
+import { GoThreeBars } from "react-icons/go";
+import "./CSS/Nav.css";
+
 function Nav() {
-  const navLink = ({ isActive }) => (isActive ? "font-bold" : "font-thin");
+  const navLink = ({ isActive }) =>
+    isActive ? "font-bold border-b-2 border-gray-600" : "font-thin";
+
+  const [toggleNav, handleToggleNav] = useState(false);
+
+  const closeNav = () => handleToggleNav(!toggleNav);
+  const closeLink = () => handleToggleNav(false);
 
   return (
     <nav>
-      <ul className="flex list-none">
-        <li className="ml-4">
-          <NavLink to="/" className={navLink}>
-            Home
-          </NavLink>
-        </li>
-        {/* <li className="ml-4">
-          <NavLink to="authentication" className={navLink}>
-            Authentication
-          </NavLink>
-        </li> */}
-        <li className="ml-4">
-          <NavLink to="about" className={navLink}>
-            About
-          </NavLink>
-        </li>
-        <li className="ml-4">
-          <NavLink to="userProfile" className={navLink}>
-            User Profile
-          </NavLink>
-        </li>
-        <li className="ml-4">
-          <NavLink to="contactUs" className={navLink}>
-            Contact Us
-          </NavLink>
+      <button className="hidden xs:block" onClick={closeNav}>
+        <GoThreeBars size={35} />
+      </button>
+      <ul className={`xs:hidden flex  ${toggleNav ? "isOpen" : null}`}>
+        <NavItem
+          itemClass="m-2"
+          to="/"
+          onClick={closeLink}
+          className={navLink}
+          text="Home"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="about"
+          onClick={closeLink}
+          className={navLink}
+          text="About"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="contactUs"
+          onClick={closeLink}
+          className={navLink}
+          text="Contact Us"
+        />
+        <NavItem
+          itemClass="m-2"
+          to="userProfile"
+          onClick={closeLink}
+          className={navLink}
+          text="User Profile"
+        />
+        <li className="m-2">
+          <Link to="/authentication" onClick={closeLink}>
+            <Button buttonStyle="bg-cream p-1 mb-5 " text="Sign In" />
+          </Link>
         </li>
       </ul>
     </nav>

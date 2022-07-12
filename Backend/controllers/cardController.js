@@ -121,18 +121,21 @@ let checkUniqueId = (uniqueCardId) => {
 	})
 }
 
-const deleteCard = (cardId, ownerId) => {
+const deleteCard = (cardId, decodedToken) => {
+	const { _id: ownerId, isAdmin, isBusiness } = decodedToken
 	return new Promise((resolve, reject) => {
-		Card.findOneAndDelete({
-			_id: cardId,
-			$or: [{ ownerId }, { isAdmin: true }],
-		}).then((card) => {
-			if (!card) {
-				reject("You do not have permission to delete this card!")
-			} else {
-				resolve(card)
-			}
-		})
+		if (!isBusiness && !isAdmin) {
+			reject("You do not have permission to update this card!")
+		}
+		if (isAdmin || existCard(cardId, ownerId)) {
+			Card.findOneAndDelete({ _id: cardId }).then((card) => {
+				if (!card) {
+					reject("You do not have permission to delete this card!")
+				} else {
+					resolve(card)
+				}
+			})
+		}
 	}).catch((err) => reject(err))
 }
 

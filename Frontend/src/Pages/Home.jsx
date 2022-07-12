@@ -1,12 +1,9 @@
+import CardList from "../Components/CardList";
 function Home() {
   return (
-    <>
-      <h1>Home</h1>
-      <br />
-      if user signin <br />
-      <h1>All Cards</h1>
-      <br />
-    </>
+    <div className="pl-2">
+      <CardList />
+    </div>
   );
 }
 

@@ -4,11 +4,11 @@ import Wrapper from "./Components/Wrapper";
 
 function App() {
   return (
-    <>
+    <div>
       <Header />
       <Wrapper />
       <Footer />
-    </>
+    </div>
   );
 }
 
