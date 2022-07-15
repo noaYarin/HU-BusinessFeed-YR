@@ -1,34 +1,14 @@
-import Input from "./Input";
+import "../Assests/Styles/CardForm.css";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import Joi from "joi";
+import { validateForm } from "../Services/Utils/FormikAndJoiValidation";
 import Button from "./Button";
 import Image from "./Image";
-import "./CSS/CardForm.css";
+import Input from "./Input";
 
 function CardForm() {
-  const [img, setImg] = useState();
-
-  const onImageChange = (e) => {
-    const [file] = e.target.files;
-    setImg(URL.createObjectURL(file));
-  };
-
-  const validateForm = (schema) => {
-    return (values) => {
-      const { error } = Joi.object(schema).validate(values, {
-        abortEarly: false,
-      });
-
-      if (!error) return null;
-
-      const errors = {};
-      for (const detail of error.details) {
-        errors[detail.path[0]] = detail.message;
-      }
-      return errors;
-    };
-  };
+  const [img, setImg] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -39,11 +19,11 @@ function CardForm() {
       bizImageUrl: "",
     },
     validate: validateForm({
-      bizName: Joi.string().min(2).max(30).required(),
-      bizDesc: Joi.string().min(10).max(50).required(),
-      bizAddr: Joi.string().min(6).max(30).required(),
-      bizPhone: Joi.string().min(2).max(30).required(),
-      bizImageUrl: Joi.string().min(10).required(),
+      bizName: Joi.string().min(2).max(30).required().label("Name"),
+      bizDesc: Joi.string().min(10).max(50).required().label("Description"),
+      bizAddr: Joi.string().min(6).max(30).required().label("Adress"),
+      bizPhone: Joi.string().min(2).max(30).required().label("Phone"),
+      bizImageUrl: Joi.string().min(10).uri().allow(""),
     }),
     onSubmit: (values) => {
       JSON.stringify(values, null, 2);
@@ -51,9 +31,9 @@ function CardForm() {
   });
 
   return (
-    <div className="flex justify-center align-middle">
+    <div className="flex justify-center align-middle xs:flex-col">
       <form
-        className="flex justify-center p-3 m-3 rounded-2xl flex-col"
+        className="flex justify-center p-3 m-4 flex-col "
         onSubmit={formik.handleSubmit}
       >
         <Input
@@ -100,12 +80,11 @@ function CardForm() {
           id="bizImageUrl"
           name="image"
           text="Business Image:"
-          type="file"
-          accept=".gif,.jpg,.jpeg,.png,.doc,.docx"
+          type="url"
           labelStyle="labelStyle"
-          inputStyle="m-6"
-          onChange={onImageChange}
+          inputStyle="inputStyle"
           {...formik.getFieldProps("bizImageUrl")}
+          // onChange={() => setImg(formik.values.bizImageUrl)}
         />
         {formik.touched.bizImageUrl && formik.errors.bizImageUrl}
         <Button
@@ -115,7 +94,11 @@ function CardForm() {
           type="submit"
         />
       </form>
-      <Image src={img} alt="Business Image" imageStyle="p-3 m-2 w-4/12" />
+      <Image
+        src={img}
+        alt="Business Image"
+        imageStyle={`p-3 m-2 w-4/12 ${!img ? "hidden" : null}`}
+      />
     </div>
   );
 }

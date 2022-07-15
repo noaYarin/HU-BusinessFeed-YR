@@ -4,7 +4,7 @@ import About from "../Pages/About";
 import Authentication from "../Pages/Authentication";
 import ContactUs from "../Pages/ContactUs";
 import UserProfile from "../Pages/UserProfile";
-import CardForm from "./CardForm";
+import CardForm from "../Components/CardForm";
 
 function Wrapper() {
   return (
