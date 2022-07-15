@@ -1,9 +1,9 @@
-import NavItem from "./NavItem";
-import { Link } from "react-router-dom";
-import Button from "./Button";
+import "../Assests/Styles/Nav.css";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { GoThreeBars } from "react-icons/go";
-import "./CSS/Nav.css";
+import NavItem from "./NavItem";
+import Button from "./Button";
 
 function Nav() {
   const navLink = ({ isActive }) =>

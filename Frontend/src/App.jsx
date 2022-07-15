@@ -1,14 +1,14 @@
-import Header from "./Components/Header";
-import Footer from "./Components/Footer";
-import Wrapper from "./Components/Wrapper";
+import Header from "./Layouts/Header";
+import Footer from "./Layouts/Footer";
+import Wrapper from "./Layouts/Wrapper";
 
 function App() {
   return (
-    <div>
+    <>
       <Header />
       <Wrapper />
       <Footer />
-    </div>
+    </>
   );
 }
 

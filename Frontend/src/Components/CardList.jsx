@@ -3,9 +3,8 @@ import React, { useEffect, useState } from "react";
 
 function CardList() {
   const [cards, setCards] = useState([]);
-
   useEffect(() => {
-    fetch("http://localhost:2907/cards/allCards")
+    fetch(`${process.env.API_URL}/cards/allCards`)
       .then((res) => res.json())
       .then((cards) => setCards(cards))
       .catch((err) => {
@@ -15,14 +14,18 @@ function CardList() {
 
   return (
     <div className="flex flex-wrap justify-around">
-      {cards.map((cardItem) => (
-        <CardItem
-          key={cardItem._id}
-          bName={cardItem.bName}
-          bDesc={cardItem.bDesc}
-          bImg={cardItem.bImageUrl}
-        />
-      ))}
+      {!cards.length ? (
+        <h1>No Cards Yet</h1>
+      ) : (
+        cards.map((cardItem) => (
+          <CardItem
+            key={cardItem._id}
+            bName={cardItem.bName}
+            bDesc={cardItem.bDesc}
+            bImg={cardItem.bImageUrl}
+          />
+        ))
+      )}
     </div>
   );
 }
