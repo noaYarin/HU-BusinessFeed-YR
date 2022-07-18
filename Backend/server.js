@@ -12,7 +12,8 @@ const express = require("express"),
 	fs = require("fs"),
 	morgan = require("morgan"),
 	path = require("path"),
-	routerCache = require("./routerCache")
+	routerCache = require("./routerCache"),
+	nodeMailer = require('nodemailer');
 
 const accessLogStream = fs.createWriteStream(
 	path.join(__dirname, "access.log"),
@@ -22,7 +23,7 @@ const accessLogStream = fs.createWriteStream(
 app.use(morgan("combined", { stream: accessLogStream }))
 
 const corsOption = {
-	origin: ["http://localhost:3000"],
+	origin: [ "http://localhost:3000" ],
 }
 app.use(cors(corsOption))
 app.use(routerCache)
@@ -39,7 +40,7 @@ app.use((req, res, next) => {
 	if (auth.authorizedRequests(req.originalUrl)) {
 		return next()
 	}
-	token = req.headers["authorization"]
+	token = req.headers[ "authorization" ]
 	if (token) {
 		token = token.replace("Bearer ", "")
 		auth.verifyToken(token)
@@ -76,3 +77,43 @@ mongoose
 	})
 	.catch((err) => console.error(err))
 //#endregion
+
+
+const SMTPServer = require("smtp-server").SMTPServer;
+
+const server = new SMTPServer({
+	//options
+});
+
+const transporter = nodeMailer.createTransport({
+	service:"gmail",
+	auth: {
+		user: process.env.SMTP_MAIL,
+		pass:process.env.SMTP_PASSWORD
+	},
+});
+
+emailUser = {
+	email: process.env.SMTP_MAIL,
+	subject: "Hello from Business Feed",
+	message: "",
+	html: "<h1>Hi Yarin!</h1>"
+}
+const mailOptions = {
+	from: process.env.SMTP_MAIL,
+	to: emailUser.email,
+	subject: emailUser.subject,
+	text: emailUser.message,
+	html: emailUser.html
+};
+
+// verify connection configuration
+
+server.listen(587, () => {
+	transporter.verify(function (error, success) {
+		if (error) return console.log(error);
+		console.log('Server is ready to take our messages');
+	});
+});
+
+transporter.sendMail(mailOptions);
