@@ -1,4 +1,4 @@
-function Button({ text, buttonStyle }) {
+function Button({ text = "", buttonStyle = "" }) {
   return <button className={buttonStyle}>{text}</button>;
 }
 

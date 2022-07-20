@@ -1,6 +1,7 @@
 import axios from "axios";
+import config from "../Config/config.json";
 
-axios.defaults.baseURL = process.env.API_URL;
+axios.defaults.baseURL = config.apiUrl;
 
 const httpService = {
   get: axios.get,

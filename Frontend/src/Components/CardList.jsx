@@ -1,12 +1,12 @@
 import CardItem from "./CardItem";
 import React, { useEffect, useState } from "react";
+import { getAllCards } from "../Services/CardsService";
 
 function CardList() {
   const [cards, setCards] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.API_URL}/cards/allCards`)
-      .then((res) => res.json())
-      .then((cards) => setCards(cards))
+    getAllCards()
+      .then((cards) => setCards(cards.data))
       .catch((err) => {
         throw new Error(err.message);
       });

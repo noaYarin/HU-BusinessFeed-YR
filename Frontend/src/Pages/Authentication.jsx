@@ -1,5 +1,7 @@
+import SignIn from "../Components/SignIn";
+
 function Authentication() {
-  return <h1>Authentication</h1>;
+  return <SignIn />;
 }
 
 export default Authentication;

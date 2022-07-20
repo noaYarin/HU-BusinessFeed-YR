@@ -1,6 +1,6 @@
 import Button from "./Button";
 import { Link } from "react-router-dom";
-function CardItem({ bImg, bName, bDesc }) {
+function CardItem({ bImg = "img", bName = "Name", bDesc = "Description" }) {
   return (
     <div className="w-80 h-2/4 rounde text-center shadow-lg m-12">
       <img src={bImg} alt={bName} className="object-cover h-48 w-full " />
