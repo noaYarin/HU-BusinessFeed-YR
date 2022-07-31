@@ -15,7 +15,7 @@ function Nav() {
   const closeLink = () => handleToggleNav(false);
 
   return (
-    <nav>
+    <nav className="p-6">
       <button className="hidden xs:block" onClick={closeNav}>
         <GoThreeBars size={35} />
       </button>
@@ -48,9 +48,15 @@ function Nav() {
           className={navLink}
           text="User Profile"
         />
-        <li className="m-2">
-          <Link to="/authentication" onClick={closeLink}>
-            <Button buttonStyle="bg-cream p-1 mb-5 " text="Sign In" />
+        <li className="m-1">
+          <Link to="/signIn" onClick={closeLink}>
+            <Button buttonStyle="bg-cream p-1 rounded-md" text="Sign In" />
+          </Link>
+        </li>
+        <li className="m-1 h-8 border-l-2"></li>
+        <li className="m-1">
+          <Link to="/signUp" onClick={closeLink}>
+            <Button buttonStyle="bg-cream p-1 rounded-md" text="Sign Up" />
           </Link>
         </li>
       </ul>

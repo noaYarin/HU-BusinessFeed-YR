@@ -1,8 +1,9 @@
 import Nav from "../Components/Nav";
-function Header() {
+import Image from "../Components/Image";
+function Header({ logo, text, imageStyle }) {
   return (
-    <div className="w-full flex fixed top-0 left-0 align-middle justify-between h-24 bg-green-200 p-4">
-      <div className="w-40">Logo</div>
+    <div className=" w-full flex align-middle justify-between h-24 bg-green-200">
+      <Image src={logo} alt={text} imageStyle={imageStyle} />
       <Nav />
     </div>
   );
