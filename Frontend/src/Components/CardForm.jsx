@@ -2,7 +2,7 @@ import "../Assests/Styles/CardForm.css";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import Joi from "joi";
-import { validateForm } from "../Services/Utils/JoiValidation";
+import { formikValidation } from "../Services/Utils/JoiValidation";
 import Button from "./Button";
 import Image from "./Image";
 import Input from "./Input";
@@ -18,7 +18,7 @@ function CardForm() {
       bizPhone: "",
       bizImageUrl: "",
     },
-    validate: validateForm({
+    validate: formikValidation({
       bizName: Joi.string().min(2).max(30).required().label("Name"),
       bizDesc: Joi.string().min(10).max(50).required().label("Description"),
       bizAddr: Joi.string().min(6).max(30).required().label("Adress"),
