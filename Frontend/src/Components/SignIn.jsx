@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { signIn } from "../Services/UsersService";
-import { Link } from "react-router-dom";
+import { useAuth } from "../Context/authContext";
+import { JoiValidation } from "../Services/Utils/Validation";
+import { Link, useNavigate } from "react-router-dom";
 import Joi from "joi";
 import Input from "./Input";
 import Button from "./Button";
 import Title from "./Title";
-// import { toast } from "react-toastify";
 
-function SignIn() {
-  const [userName, setUserName] = useState("");
+function SignIn({ redirect }) {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [error, setErrors] = useState({});
+  const { userSignIn } = useAuth();
+  const navigate = useNavigate();
 
   const baseStyle = {
     input:
@@ -18,34 +20,32 @@ function SignIn() {
     errMsg: " text-green-300",
   };
 
-  const schema = Joi.object({
-    userName: Joi.string()
-      .alphanum()
-      .min(2)
-      .max(30)
-      .required()
-      .label("Username"),
+  const schema = {
+    email: Joi.string()
+      .email({
+        minDomainSegments: 2,
+        tlds: { allow: ["com", "net"] },
+      })
+      .label("Email"),
     password: Joi.string()
       .required()
-      .pattern(new RegExp(`[a-zA-Z0-9\b{9}]`))
+      .pattern(new RegExp(`[a-zA-Z0-9]{9}`))
       .label("Password"),
-  });
+  };
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    const { error, value } = schema.validate(
-      { userName, password },
-      {
-        abortEarly: false,
+    const validationErrors = JoiValidation(schema, { email, password });
+    if (!validationErrors) {
+      try {
+        userSignIn({ email, password });
+        navigate(redirect);
+      } catch (response) {
+        setErrors({ dbErr: response.data });
       }
-    );
-
-    if (!error) return null;
-    const errs = {};
-    for (const detail of error.details) {
-      errors[detail.path[0]] = detail.message;
+    } else {
+      setErrors(validationErrors);
     }
-    setErrors(errs);
   };
 
   return (
@@ -57,28 +57,28 @@ function SignIn() {
         <div className="flex flex-col p-6 space-y-3 mb-8">
           <Title titleStyle="self-center mb-4 text-4xl" text="Sign In" />
           <Input
-            onChange={(e) => setUserName(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             type="text"
-            placeholder="Username"
+            placeholder="Email"
             inputStyle={baseStyle.input}
           />
-          <p className={baseStyle.errMsg}>{errors.userName}</p>
+          <p className={baseStyle.errMsg}>{error.userName}</p>
           <Input
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
             inputStyle={baseStyle.input}
           />
-          <p className={baseStyle.errMsg}>{errors.password}</p>
+          <p className={baseStyle.errMsg}>{error.password}</p>
           <Button
             text="Sign In"
             buttonStyle="bg-green-300 font-bold py-2 px-4 rounded"
           />
+          <p className="text-center text-green-200 mt-2">{error.dbErr}</p>
         </div>
         <p className=" font-bold text-sm text-green-300 text-center">
           Don't have account?{" "}
           <Link to="/signUp" className="border-b-2">
-            {" "}
             Sign up
           </Link>
         </p>

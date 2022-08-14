@@ -29,20 +29,6 @@ function Nav() {
         />
         <NavItem
           itemClass="m-2"
-          to="about"
-          onClick={closeLink}
-          className={navLink}
-          text="About"
-        />
-        <NavItem
-          itemClass="m-2"
-          to="contactUs"
-          onClick={closeLink}
-          className={navLink}
-          text="Contact Us"
-        />
-        <NavItem
-          itemClass="m-2"
           to="userProfile"
           onClick={closeLink}
           className={navLink}

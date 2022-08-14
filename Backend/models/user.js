@@ -45,7 +45,7 @@ userSchema.methods.validateUserFields = (user) => {
 		}),
 		password: Joi.string()
 			.required()
-			.pattern(new RegExp("[a-zA-Z0-9\b{9}]")),
+			.pattern(new RegExp(`[a-zA-Z0-9]{9}`)),
 
 		isBusiness: Joi.boolean().default(false),
 	})
