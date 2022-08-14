@@ -2,7 +2,7 @@ import "../Assests/Styles/CardForm.css";
 import React, { useState } from "react";
 import { useFormik } from "formik";
 import Joi from "joi";
-import { formikValidation } from "../Services/Utils/JoiValidation";
+import { formikValidation } from "../Services/Utils/Validation";
 import Button from "./Button";
 import Image from "./Image";
 import Input from "./Input";

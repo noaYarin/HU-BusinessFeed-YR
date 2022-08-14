@@ -3,6 +3,10 @@ import config from "../Config/config.json";
 
 axios.defaults.baseURL = config.apiUrl;
 
+export const setCommonHeader = (header, value) => {
+  axios.defaults.headers.common[header] = value;
+};
+
 const httpService = {
   get: axios.get,
   post: axios.post,
